@@ -1,0 +1,7 @@
+v0.1.0
+- Initial release.
+- Auto-toggles coreelec.amlogic.dolbyvision.audio.seamlessbranch on AV-start
+  for movies in the bundled curated list whose audio is TrueHD or EAC3.
+- IMDb and TMDB ID matching against resources/seamless_branching.json.
+- Optional user additions via <profile>/seamless_branching_user.json.
+- Defers to PlexMod4Kodi (script.plexmod) when it is the active session.

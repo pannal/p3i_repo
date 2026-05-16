@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
+<addon id="service.p3i.sb" name="p3i Seamless Branching Helper" version="0.1.0" provider-name="pannal">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.service" library="service.py"/>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Auto-enables the CoreELEC LAV seamless-branching workaround for known SB titles.</summary>
+        <description lang="en_GB">Service addon for the p3i CoreELEC build. When a movie with a known seamless-branching audio issue (TrueHD or tms EAC3) starts playing, this addon toggles the CoreELEC LAV filter mode to avoid audio dropouts, and restores the previous mode on stop. Matches both IMDb and TMDB IDs against a bundled, curated list. Defers automatically when PlexMod4Kodi (script.plexmod) is running, since PM4K handles the same workaround for Plex-sourced playback.</description>
+        <platform>linux</platform>
+        <license>GPL-2.0-or-later</license>
+        <source>https://github.com/pannal/p3i_repo</source>
+        <assets>
+            <icon>resources/icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
 <addon id="repository.p3i" name="p3i" version="0.1.0" provider-name="pannal">
     <extension point="xbmc.addon.repository" name="p3i Kodi Repo">
         <dir minversion="20.90.0">

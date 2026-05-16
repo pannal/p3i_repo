@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "last_updated": "2026-01-19",
+  "source": "https://forums.plex.tv/t/plex-truehd-atmos-seamless-branch-nvidia-shield-bad-movies/934740",
+  "description": "Movies with seamless branching issues when playing TrueHD/JOC audio. These films may experience audio dropouts and video/audio sync issues during DirectPlay.",
+  "movies": [
+    {
+      "imdb_id": "tt0068156",
+      "title": "1776 (1972)",
+      "tmdb_id": 14902
+    },
+    {
+      "imdb_id": "tt0183790",
+      "title": "A Knight's Tale (2001)",
+      "tmdb_id": 9476
+    },
+    {
+      "imdb_id": "tt0090605",
+      "title": "Aliens (1986)",
+      "tmdb_id": 679
+    },
+    {
+      "imdb_id": "tt0078788",
+      "title": "Apocalypse Now (1979)",
+      "tmdb_id": 28
+    },
+    {
+      "imdb_id": "tt0499549",
+      "title": "Avatar (2009)",
+      "tmdb_id": 19995
+    },
+    {
+      "imdb_id": "tt1630029",
+      "title": "Avatar: The Way of Water (2022)",
+      "tmdb_id": 76600
+    },
+    {
+      "imdb_id": "tt1469304",
+      "title": "Baywatch (2017)",
+      "tmdb_id": 339846
+    },
+    {
+      "imdb_id": "tt0265086",
+      "title": "Black Hawk Down (2001)",
+      "tmdb_id": 855
+    },
+    {
+      "imdb_id": "tt0103919",
+      "title": "Candyman (1992)",
+      "tmdb_id": 9529
+    },
+    {
+      "imdb_id": "tt0082198",
+      "title": "Conan the Barbarian (1982)",
+      "tmdb_id": 9387
+    },
+    {
+      "imdb_id": "tt5433138",
+      "title": "F9: The Fast Saga (2021)",
+      "tmdb_id": 385128
+    },
+    {
+      "imdb_id": "tt1289401",
+      "title": "Ghostbusters (2016)",
+      "tmdb_id": 43074
+    },
+    {
+      "imdb_id": "tt10665338",
+      "title": "Halloween Kills (2021)",
+      "tmdb_id": 610253
+    },
+    {
+      "imdb_id": "tt0167190",
+      "title": "Hellboy (2004)",
+      "tmdb_id": 1487
+    },
+    {
+      "imdb_id": "tt0320691",
+      "title": "Kingdom of Heaven (2005)",
+      "tmdb_id": 277
+    },
+    {
+      "imdb_id": "tt0093409",
+      "title": "Lethal Weapon (1987)",
+      "tmdb_id": 941
+    },
+    {
+      "imdb_id": "tt0110413",
+      "title": "Léon: The Professional (1994)",
+      "tmdb_id": 101
+    },
+    {
+      "imdb_id": "tt8760708",
+      "title": "M3GAN (2022)",
+      "tmdb_id": 536554
+    },
+    {
+      "imdb_id": "tt26342662",
+      "title": "M3GAN 2.0 (2025)",
+      "tmdb_id": 1071585
+    },
+    {
+      "imdb_id": "tt15495720",
+      "title": "Nosferatu (2024)",
+      "tmdb_id": 426063
+    },
+    {
+      "imdb_id": "tt1711525",
+      "title": "Office Christmas Party (2016)",
+      "tmdb_id": 384682
+    },
+    {
+      "imdb_id": "tt0134847",
+      "title": "Pitch Black (2000)",
+      "tmdb_id": 2787
+    },
+    {
+      "imdb_id": "tt0318627",
+      "title": "Resident Evil: Apocalypse (2004)",
+      "tmdb_id": 1577
+    },
+    {
+      "imdb_id": "tt0108002",
+      "title": "Rudy (1993)",
+      "tmdb_id": 14534
+    },
+    {
+      "imdb_id": "tt0079945",
+      "title": "Star Trek: The Motion Picture (1979)",
+      "tmdb_id": 152
+    },
+    {
+      "imdb_id": "tt0084726",
+      "title": "Star Trek II: The Wrath of Khan (1982)",
+      "tmdb_id": 154
+    },
+    {
+      "imdb_id": "tt0080684",
+      "title": "Star Wars: Episode V - The Empire Strikes Back (1980)",
+      "tmdb_id": 1891
+    },
+    {
+      "imdb_id": "tt0838283",
+      "title": "Step Brothers (2008)",
+      "tmdb_id": 12133
+    },
+    {
+      "imdb_id": "tt0083131",
+      "title": "Stripes (1981)",
+      "tmdb_id": 10890
+    },
+    {
+      "imdb_id": "tt0100758",
+      "title": "Teenage Mutant Ninja Turtles (1990)",
+      "tmdb_id": 1498
+    },
+    {
+      "imdb_id": "tt0096754",
+      "title": "The Abyss (1989)",
+      "tmdb_id": 2756
+    },
+    {
+      "imdb_id": "tt0080455",
+      "title": "The Blues Brothers (1980)",
+      "tmdb_id": 525
+    },
+    {
+      "imdb_id": "tt0405422",
+      "title": "The 40-Year-Old Virgin (2005)",
+      "tmdb_id": 6957
+    },
+    {
+      "imdb_id": "tt0391198",
+      "title": "The Grudge (2004)",
+      "tmdb_id": 1970
+    },
+    {
+      "imdb_id": "tt3659388",
+      "title": "The Martian (2015)",
+      "tmdb_id": 286217
+    },
+    {
+      "imdb_id": "tt0087781",
+      "title": "The Natural (1984)",
+      "tmdb_id": 11393
+    },
+    {
+      "imdb_id": "tt0320691",
+      "title": "Underworld (2003)",
+      "tmdb_id": 277
+    },
+    {
+      "imdb_id": "tt2948356",
+      "title": "Zootopia (2016)",
+      "tmdb_id": 269149
+    }
+  ]
+}

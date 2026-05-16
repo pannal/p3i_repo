@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: service.p3i.sb\n"
+"Report-Msgid-Bugs-To: panniiii@gmail.com\n"
+"POT-Creation-Date: 2026-05-16 00:00+0000\n"
+"PO-Revision-Date: 2026-05-16 00:00+0000\n"
+"Last-Translator: pannal\n"
+"Language-Team: English (United Kingdom)\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "#32001"
+msgid "General"
+msgstr ""
+
+msgctxt "#32010"
+msgid "Auto-enable LAV seamless-branching mode"
+msgstr ""
+
+msgctxt "#32011"
+msgid "When playing a movie from the curated list with TrueHD or tms EAC3 audio, automatically switch CoreELEC's LAV filter mode to avoid audio dropouts. Defers to PlexMod4Kodi when it is running."
+msgstr ""
+
+msgctxt "#32012"
+msgid "LAV mode"
+msgstr ""
+
+msgctxt "#32013"
+msgid "Mode applied to coreelec.amlogic.dolbyvision.audio.seamlessbranch when a seamless-branching movie is detected. Default: LAV SB."
+msgstr ""
+
+msgctxt "#32020"
+msgid "Off"
+msgstr ""
+
+msgctxt "#32021"
+msgid "Seek sync"
+msgstr ""
+
+msgctxt "#32022"
+msgid "Debug"
+msgstr ""
+
+msgctxt "#32023"
+msgid "LAV SB"
+msgstr ""
+
+msgctxt "#32024"
+msgid "LAV full"
+msgstr ""
