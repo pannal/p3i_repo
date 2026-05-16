@@ -140,7 +140,8 @@ class SBPlayer(xbmc.Player):
             heading = util.ADDON.getLocalizedString(32030) or "Seamless branching"
             msg_tpl = util.ADDON.getLocalizedString(32031) or "LAV mode: %s -> %s"
             msg = msg_tpl % (prev, new)
-            xbmcgui.Dialog().notification(heading, msg, icon, 3000, False)
+            # 5s so the toast survives a HDMI mode switch (~2-3s on Amlogic).
+            xbmcgui.Dialog().notification(heading, msg, icon, 5000, False)
         except Exception as exc:
             util.warn("notification failed: {}".format(exc))
 
