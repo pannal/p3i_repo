@@ -1,3 +1,7 @@
+v0.1.1
+- Add "show notification when LAV mode is switched" setting (default on)
+  so users can see at a glance that the helper engaged on an SB title.
+
 v0.1.0
 - Initial release.
 - Auto-toggles coreelec.amlogic.dolbyvision.audio.seamlessbranch on AV-start

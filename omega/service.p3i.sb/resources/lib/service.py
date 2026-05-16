@@ -7,7 +7,10 @@ the curated SB list, and whose audio is TrueHD or (likely) tms EAC3, set the
 CoreELEC LAV seamless-branching mode. Restore the previous mode on stop / end /
 error. Defers to PM4K when script.plex.running == '1' on Window 10000.
 """
+import os
+
 import xbmc
+import xbmcgui
 
 from . import util
 from .sb_data import SBList
@@ -115,9 +118,22 @@ class SBPlayer(xbmc.Player):
         if ok:
             self._toggled = True
             util.log("LAV mode {} -> {}".format(self._saved_mode, mode))
+            self._maybe_notify(self._saved_mode, mode)
         else:
             util.warn("Failed to set {} = {}".format(LAV_SETTING_ID, mode))
             self._toggled = False
+
+    def _maybe_notify(self, prev, new):
+        if not util.get_setting_bool("show_notification", True):
+            return
+        try:
+            icon = os.path.join(util.ADDON_PATH, "resources", "icon.png")
+            heading = util.ADDON.getLocalizedString(32030) or "Seamless branching"
+            msg_tpl = util.ADDON.getLocalizedString(32031) or "LAV mode: %s -> %s"
+            msg = msg_tpl % (prev, new)
+            xbmcgui.Dialog().notification(heading, msg, icon, 3000, False)
+        except Exception as exc:
+            util.warn("notification failed: {}".format(exc))
 
     def _restore(self):
         if not self._toggled:

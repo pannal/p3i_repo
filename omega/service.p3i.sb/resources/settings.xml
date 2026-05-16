@@ -8,6 +8,11 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
+                <setting id="show_notification" type="boolean" label="32014" help="32015">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="lav_mode" type="integer" label="32012" help="32013">
                     <level>0</level>
                     <default>4</default>

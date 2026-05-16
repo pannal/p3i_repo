@@ -31,6 +31,22 @@ msgctxt "#32013"
 msgid "Mode applied to coreelec.amlogic.dolbyvision.audio.seamlessbranch when a seamless-branching movie is detected. Default: LAV SB."
 msgstr ""
 
+msgctxt "#32014"
+msgid "Show notification when LAV mode is switched"
+msgstr ""
+
+msgctxt "#32015"
+msgid "Show a brief toast when an SB title triggers a LAV mode switch. Useful for verifying the helper is engaging."
+msgstr ""
+
+msgctxt "#32030"
+msgid "Seamless branching"
+msgstr ""
+
+msgctxt "#32031"
+msgid "LAV mode: %s -> %s"
+msgstr ""
+
 msgctxt "#32020"
 msgid "Off"
 msgstr ""
