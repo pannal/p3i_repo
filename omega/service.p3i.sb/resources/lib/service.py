@@ -11,9 +11,13 @@ import os
 
 import xbmc
 import xbmcgui
+import xbmcvfs
 
 from . import util
 from .sb_data import SBList
+
+SB_MARKER_FILES = ("SB", "SB.txt")
+REMOTE_SCHEMES = ("http://", "https://", "plugin://", "pvr://", "plex://", "upnp://")
 
 LAV_SETTING_ID = "coreelec.amlogic.dolbyvision.audio.seamlessbranch"
 LAV_MODE_OFF = 0
@@ -160,20 +164,43 @@ class SBPlayer(xbmc.Player):
         if util.pm4k_running():
             util.debug("PM4K is running, deferring")
             return
-        if not self._is_movie():
-            return
-        imdb, tmdb = self._movie_ids()
+
+        forced = self._has_sb_marker()
+        imdb, tmdb = self._movie_ids() if self._is_movie() else (None, None)
         match = self.sb_list.match(imdb_id=imdb, tmdb_id=tmdb)
-        if not match:
+        if not match and not forced:
             return
+
         codec = self._audio_codec()
-        if not self._audio_qualifies(codec):
+        if match and not forced and not self._audio_qualifies(codec):
             util.debug("SB title {} matched but audio codec {} doesn't qualify".format(
                 imdb or tmdb, codec or "<none>"))
             return
-        util.log("SB match: title='{}' imdb={} tmdb={} codec={}".format(
-            match.get("title", "?"), imdb, tmdb, codec))
+
+        if forced:
+            util.log("SB marker file present, forcing engage (codec={})".format(codec or "<none>"))
+        else:
+            util.log("SB match: title='{}' imdb={} tmdb={} codec={}".format(
+                match.get("title", "?"), imdb, tmdb, codec))
         self._apply(self._configured_mode())
+
+    def _has_sb_marker(self):
+        try:
+            path = self.getPlayingFile()
+        except RuntimeError:
+            return False
+        if not path:
+            return False
+        lower = path.lower()
+        if lower.startswith(REMOTE_SCHEMES):
+            return False
+        folder = os.path.dirname(path)
+        if not folder:
+            return False
+        for marker in SB_MARKER_FILES:
+            if xbmcvfs.exists(os.path.join(folder, marker)):
+                return True
+        return False
 
     def onPlayBackStopped(self):
         self._restore()

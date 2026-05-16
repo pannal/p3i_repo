@@ -1,3 +1,11 @@
+v0.1.2
+- Force-engage when a file named "SB" or "SB.txt" is present in the
+  same folder as the playing file. Works in addition to the curated
+  IMDb/TMDB list, so users with missing or unscraped metadata can
+  opt-in per-folder without waiting for a list update. The marker
+  bypasses the codec gate -- user said engage, we engage.
+- New service-addon icon.
+
 v0.1.1
 - Add "show notification when LAV mode is switched" setting (default on)
   so users can see at a glance that the helper engaged on an SB title.
