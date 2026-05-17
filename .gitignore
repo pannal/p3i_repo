@@ -3,3 +3,6 @@
 */**/.gitignore
 */skin.*/media
 !*/skin.*/media/*.xbt
+__pycache__/
+*.pyc
+*.pyo
