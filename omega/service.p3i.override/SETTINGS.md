@@ -56,6 +56,74 @@ Values are coerced to the setting's existing type by probing
 
 A coercion failure is logged and the entry is skipped.
 
+## Examples
+
+### One movie per folder — single tweak
+
+`/Movies/Avatar (2009)/override.ini`:
+```ini
+# Force CMv4.0 append for any title in this folder.
+coreelec.amlogic.dolbyvision.cmv40.append = 2
+```
+
+### Flat library — per-file tuning with a global default
+
+`/Movies/override.ini`:
+```ini
+[global]
+coreelec.amlogic.dolbyvision.cmv40.append = 2
+
+[Avatar (2009).mkv]
+# 1080p 2.35:1 letterbox — fill in L5 the stream omitted so subtitles ride above the bar
+coreelec.amlogic.dolbyvision.level5.override = 140,140,0,0
+
+[Dune (2021).mkv]
+# 4K 2.4:1
+coreelec.amlogic.dolbyvision.level5.override = 280,280,0,0
+```
+
+### Franchise glob
+
+`/Movies/override.ini`:
+```ini
+[Mission - Impossible*.mkv]
+coreelec.amlogic.dolbyvision.cmv40.append = 2
+```
+
+### TV season folder — global plus one-off
+
+`/TV/Show Name/Season 01/override.ini`:
+```ini
+[global]
+coreelec.amlogic.dolbyvision.cmv40.append = 2
+
+# Episode 03's RPU has L2 trims that fight the CMv4.0 path — fall back to no-L2 for it only.
+[Show Name - S01E03*.mkv]
+coreelec.amlogic.dolbyvision.cmv40.append = 1
+```
+
+### Force L5 enable surfaces on for a folder
+
+`/Movies/IMAX Enhanced/override.ini`:
+```ini
+# Drive overlay-active-area calc from L5 metadata, even if it's globally off.
+coreelec.amlogic.dolbyvision.level5 = true
+coreelec.amlogic.dolbyvision.std.source.metadata.level5 = true
+coreelec.amlogic.dolbyvision.detect.active.area = true
+```
+
+### Clear an override per-file
+
+`/Movies/override.ini`:
+```ini
+[global]
+coreelec.amlogic.dolbyvision.level5.override = 140,140,0,0
+
+# This title's RPU has correct L5 — drop the override and let the stream drive overlay calc.
+[Pristine Master.mkv]
+coreelec.amlogic.dolbyvision.level5.override =
+```
+
 ## Lifecycle
 
 - Saved values are captured at `onAVStarted` per setting written.
