@@ -59,13 +59,16 @@ VERIFIED = {
         "type": "string",
         "format": "top,bottom,left,right (unsigned ints in RPU active-area space) or empty",
         "notes": (
-            "L5 active-area override. Substituted into doviFrame/StreamMetadata "
-            "during RPU parse so the overlay-active-area calc uses these offsets "
-            "instead of the stream's. When set, also stops the active-area auto-"
-            "detect path (would just burn background cycles, since CalcOverlayActiveArea "
-            "picks override over detect). NOTE: this affects Kodi-side overlay "
-            "and DataCacheCore consumers only — the emitted RPU still carries "
-            "the stream's original L5, so the TV's tonemapping sees the original values."
+            "L5 active-area override. Both substituted into doviFrame/StreamMetadata "
+            "during RPU parse (Kodi-side overlay-active-area calc) AND pushed to the "
+            "amdolby_vision kernel module via xbmc_detected_l5_* + xbmc_force_l5_override "
+            "sysfs (so the TV sees the override values in the outgoing RPU). "
+            "Empty value = no override (stream's L5 passes through). "
+            "Any successful parse counts as active, including '0,0,0,0' which is a "
+            "legitimate override meaning 'treat the stream as having no bars / full "
+            "active frame' — useful for fixing streams whose RPU falsely claims "
+            "letterbox. When active, also stops the L5 auto-detect path (override "
+            "values supplant detected values everywhere)."
         ),
     },
 

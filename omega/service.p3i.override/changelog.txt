@@ -1,3 +1,18 @@
+v0.1.8
+- Docs: the L5 override now also flows to the TV (not just Kodi-side
+  overlay calc). Requires matching xbmc + amdolby_vision kernel patches
+  on aml-4.9-21.3_dev / amlogic-4.9-20:
+    - xbmc_force_l5_override sysfs flag in amdolby_vision (kernel)
+    - aml_dv_apply_l5_override_sysfs() in AMLUtils (Kodi)
+  Without those kernel/Kodi patches the override is Kodi-side only as
+  before — the addon writes the setting regardless, so no version-skew
+  issues, you just don't get the TV-side effect on older builds.
+- Docs: "0,0,0,0" is now a valid override meaning "treat the stream as
+  having no bars / full active frame" — for streams whose RPU falsely
+  claims letterbox. Previously misclassified as "inactive". Empty value
+  is the way to leave the stream's L5 alone.
+- New SETTINGS.md example for the "force no bars" case.
+
 v0.1.7
 - Docs: cmv40.append entry now spells out the three visible-dependencies
   that gate JSON-RPC writes (DV type = Display-LED, no VP override,

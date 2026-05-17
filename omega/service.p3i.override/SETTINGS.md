@@ -139,6 +139,19 @@ coreelec.amlogic.dolbyvision.level5.override = 140,140,0,0
 coreelec.amlogic.dolbyvision.level5.override =
 ```
 
+### Force "no bars" override (RPU falsely claims letterbox)
+
+`/Movies/override.ini`:
+```ini
+# Stream's RPU has L5 set but the picture is actually full-frame —
+# tell the TV (and Kodi overlay calc) to treat the whole frame as active.
+[Falsely Letterboxed Title.mkv]
+coreelec.amlogic.dolbyvision.level5.override = 0,0,0,0
+```
+Note: this is different from leaving the value empty (which would let
+the stream's L5 pass through). `0,0,0,0` is an explicit "no bars"
+override.
+
 ## Lifecycle
 
 - Saved values are captured at `onAVStarted` per setting written.
@@ -187,7 +200,7 @@ Status legend:
 | Setting ID | Status | Notes |
 | --- | --- | --- |
 | `coreelec.amlogic.dolbyvision.cmv40.append` | live | Atomic-cached in `CDVDVideoCodecAmlogic`, applied per-packet from `AddData()`. Values: `0`=off, `1`=CMv2.9-without-L2-trims, `2`=always. **Writable only when DV type = Display-LED (0), no VP override, and DV mode != 2** — those are visible-dependencies on the setting. On other DV paths (Player-LED / LLDV / VS10) Kodi rejects the JSON-RPC write with `InvalidParams` and the codec zeroes the value anyway (CMv4.0 only matters when the TV does the tonemapping). |
-| `coreelec.amlogic.dolbyvision.level5.override` | live | L5 active-area override string `"top,bottom,left,right"` (RPU active-area space) or empty. Substituted into `doviFrame/StreamMetadata` during RPU parse. When set, also short-circuits the L5 auto-detect path (override wins anyway). Affects Kodi-side overlay-active-area calc only — the emitted RPU still carries the stream's original L5. |
+| `coreelec.amlogic.dolbyvision.level5.override` | live | L5 active-area override string `"top,bottom,left,right"` (RPU active-area space) or empty. Substituted into `doviFrame/StreamMetadata` for Kodi-side overlay calc **AND** pushed to the amdolby_vision kernel module so the TV sees the corrected L5 in the outgoing RPU. Empty = no override. Any successful parse is active — `"0,0,0,0"` is a valid override meaning "stream falsely claims letterbox, treat as full active frame." When active, also stops the L5 auto-detect path. |
 | `coreelec.amlogic.dolbyvision.level5` | live-via-sysfs | Master L5 enable. `aml_dv_apply_l5_sysfs()` re-pushed on change. |
 | `coreelec.amlogic.dolbyvision.std.source.metadata.level5` | live-via-sysfs | Forward source L5 metadata. |
 | `coreelec.amlogic.dolbyvision.std.source.metadata.level5.osdst` | live-via-sysfs | L5 OSD-start signaling. |
