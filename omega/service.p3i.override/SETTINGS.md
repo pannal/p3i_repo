@@ -148,12 +148,16 @@ coreelec.amlogic.dolbyvision.level5.override =
 
 ## Deferrals
 
-- Defers entirely while `Window(10000).Property(script.plex.running)` is set
-  (PlexMod4Kodi runs its own playback).
 - Skips `coreelec.amlogic.dolbyvision.audio.seamlessbranch` if
   `service.p3i.sb` is installed — the SB helper owns that key via its
   curated list and `SB` / `SB.txt` marker logic. Two writers on the same
   setting around the same playback event would race.
+
+Note: this addon does **not** defer to PlexMod4Kodi. PM4K's Plex playback
+streams over http(s) URLs which are already filtered (`REMOTE_SCHEMES`),
+and for local-file playback through PM4K the user clearly wants their
+override.ini to apply. Unlike the SB helper, there's no shared-setting
+contention with PM4K to worry about.
 
 ## Verified settings
 

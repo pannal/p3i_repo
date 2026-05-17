@@ -1,3 +1,11 @@
+v0.1.5
+- Stop deferring to PlexMod4Kodi. The SB helper defers because PM4K
+  manages the same LAV SB setting for Plex playback; this addon has no
+  shared-setting contention with PM4K. Plex http(s) streams were already
+  skipped by the remote-scheme filter, so the deferral only ever blocked
+  override.ini from applying to local files played through PM4K — which
+  is the case where the user clearly wants it to apply.
+
 v0.1.4
 - addon.xml description: bring up to date with the walk + INI sections
   (was describing a flat per-folder model with no sections) and call

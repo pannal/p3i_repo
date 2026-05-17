@@ -65,9 +65,13 @@ class OverridePlayer(xbmc.Player):
     def _maybe_apply(self):
         if not self._enabled():
             return
-        if util.pm4k_running():
-            util.debug("PM4K is running, deferring")
-            return
+
+        # No PM4K deferral here — unlike the SB helper (which steps aside
+        # because PM4K runs its own SB-toggle on the same Kodi setting), the
+        # override addon doesn't conflict with PM4K. PM4K's Plex playback
+        # goes through http(s) URLs that REMOTE_SCHEMES already skips, and
+        # for local-file playback through PM4K the user clearly wants the
+        # override they wrote to apply.
 
         path = self._safe_playing_file()
         if not path:
