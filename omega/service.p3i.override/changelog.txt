@@ -1,3 +1,12 @@
+v0.1.7
+- Docs: cmv40.append entry now spells out the three visible-dependencies
+  that gate JSON-RPC writes (DV type = Display-LED, no VP override,
+  mode != 2). Earlier docs implied "just works"; in reality it works
+  only when those conditions are met, and the addon will log an
+  InvalidParams rejection on other DV paths. Same in SETTINGS.md table.
+  No code change — Kodi C++ side already has the dependencies wired
+  correctly (this is just user-facing documentation catching up).
+
 v0.1.6
 - Log the actual JSON-RPC response when Settings.SetSettingValue fails,
   so rejected writes can be diagnosed instead of silently failing with

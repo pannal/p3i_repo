@@ -43,7 +43,15 @@ VERIFIED = {
         "values": "0=off, 1=CMv2.9 without L2 trims, 2=always",
         "notes": (
             "Atomic-cached in CDVDVideoCodecAmlogic; applied per-packet from "
-            "AddData() via ApplyDynamicDoViSettings()."
+            "AddData() via ApplyDynamicDoViSettings(). WRITABLE ONLY WHEN: "
+            "DV type = Display-LED (0), no VP override (video.processor = 0), "
+            "and DV mode != 2 — these are visible-dependencies on the setting. "
+            "On other paths Kodi rejects the JSON-RPC write with InvalidParams "
+            "(the addon logs this) and the codec also zeroes the value, since "
+            "CMv4.0 append only matters when the TV does the tonemapping. "
+            "If your override fails on a Player-LED / LLDV / VS10 setup this "
+            "is the reason — set DV type to Display-LED, or scope the override "
+            "to titles played in that mode."
         ),
     },
     "coreelec.amlogic.dolbyvision.level5.override": {
