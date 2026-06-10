@@ -1,8 +1,24 @@
+[B]8.8.13[/B]
+• Codec logos: optional dark variant for the startup logos
+• Add ProRes to the video codec variables
+• PlayerProcessInfo: show the CMv4.0 → CMv2.9 down-convert state in the DV Metadata section
+• Fix overlapping media flags on music videos
+
+[B]8.8.12[/B]
+• Codec logos: add 'keep inside active area' setting (default on)
+
+[B]8.8.11[/B]
+• Remove blank space and vertical bar when subtitle language is not available
+• Keep consistent info between Enabled and Disabled subtitle
+
 [B]8.8.10[/B]
 • CoreELEC power button and calibration logo icons (vlix)
 
 [B]8.8.9[/B]
 • Codec logos: layout (vertical/horizontal) and position (left/center/right) settings, vertical+left by default, with an off-device preview toggle
+
+[B]8.8.8[/B]
+• Initial commit for p3i.Estuary
 
 [B]0.8.5[/B]
 • Updated language files from Transifex
