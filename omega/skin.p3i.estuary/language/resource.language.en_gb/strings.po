@@ -972,10 +972,20 @@ msgstr ""
 
 #: /xml/SkinSettings.xml
 msgctxt "#31671"
-msgid "Always keep codec logos inside the active area"
+msgid "Keep codec logos inside DV L5 active area"
 msgstr ""
 
 #: /xml/SkinSettings.xml
 msgctxt "#31672"
 msgid "Dark codec logos"
+msgstr ""
+
+#: /xml/SkinSettings.xml
+msgctxt "#31673"
+msgid "Hide progress bar on pause"
+msgstr ""
+
+#: /xml/SkinSettings.xml
+msgctxt "#31674"
+msgid "Hide progress bar on seek"
 msgstr ""
