@@ -236,7 +236,7 @@ class Generator:
         """
         try:
             if decode:
-                open(file, "w", encoding="utf-8").write(data.decode("utf-8"))
+                open(file, "w", encoding="utf-8", newline="\n").write(data.decode("utf-8"))
             else:
                 open(file, "w").write(data)
         except Exception as e:
