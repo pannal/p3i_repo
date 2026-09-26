@@ -206,7 +206,7 @@
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">80</param><param name="imageId">81</param>
-				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dca)</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dca) | String.IsEqual(VideoPlayer.AudioCodec,dts_es) | String.IsEqual(VideoPlayer.AudioCodec,dts_96_24) | String.IsEqual(VideoPlayer.AudioCodec,dts_express)</param>
 				<param name="texture">dca.png</param>
 			</include>
 			<include content="AudioCodecFlag">
@@ -221,13 +221,18 @@
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">86</param><param name="imageId">87</param>
-				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x)</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x) | String.IsEqual(VideoPlayer.AudioCodec,dtshd_hra_x)</param>
 				<param name="texture">dtshd_ma_x.png</param>
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">88</param><param name="imageId">89</param>
 				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x_imax)</param>
 				<param name="texture">dtshd_ma_x_imax.png</param>
+			</include>
+			<include content="AudioCodecFlag">
+				<param name="groupId">90</param><param name="imageId">91</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_auro3d)</param>
+				<param name="texture">dtshd_ma_auro3d.png</param>
 			</include>
 		</control>
 		<control type="group" id="777">
@@ -372,7 +377,7 @@
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">80</param><param name="imageId">81</param>
-				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dca)</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dca) | String.IsEqual(VideoPlayer.AudioCodec,dts_es) | String.IsEqual(VideoPlayer.AudioCodec,dts_96_24) | String.IsEqual(VideoPlayer.AudioCodec,dts_express)</param>
 				<param name="texture">dca.png</param>
 			</include>
 			<include content="AudioCodecFlag">
@@ -387,13 +392,18 @@
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">86</param><param name="imageId">87</param>
-				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x)</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x) | String.IsEqual(VideoPlayer.AudioCodec,dtshd_hra_x)</param>
 				<param name="texture">dtshd_ma_x.png</param>
 			</include>
 			<include content="AudioCodecFlag">
 				<param name="groupId">88</param><param name="imageId">89</param>
 				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_x_imax)</param>
 				<param name="texture">dtshd_ma_x_imax.png</param>
+			</include>
+			<include content="AudioCodecFlag">
+				<param name="groupId">90</param><param name="imageId">91</param>
+				<param name="visible">String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma_auro3d)</param>
+				<param name="texture">dtshd_ma_auro3d.png</param>
 			</include>
 		</control>
 	</controls>
