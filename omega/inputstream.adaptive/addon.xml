@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="inputstream.adaptive" version="666.21.5.18-p3i.1" name="InputStream Adaptive" provider-name="peak3d, Team Kodi">
+<addon id="inputstream.adaptive" version="666.21.5.25-p3i.1" name="InputStream Adaptive" provider-name="peak3d, Team Kodi">
   <requires>
     <import addon="kodi.binary.global.main" minversion="2.0.0" version="2.0.2"/>
     <import addon="kodi.binary.global.general" minversion="1.0.4" version="1.0.5"/>
@@ -9,7 +9,7 @@
     <import addon="kodi.binary.instance.inputstream" minversion="3.3.0" version="3.3.0"/>
     <import addon="kodi.binary.instance.videocodec" minversion="2.1.0" version="2.1.0"/>
   </requires>
-  <extension point="kodi.inputstream" name="adaptive" extension="" tags="true" listitemprops="drm_legacy|license_type|license_key|license_url|license_url_append|license_data|license_flags|manifest_type|server_certificate|manifest_update_parameter|manifest_upd_params|manifest_params|manifest_headers|stream_params|stream_headers|original_audio_language|play_timeshift_buffer|pre_init_data|stream_selection_type|chooser_bandwidth_max|chooser_resolution_max|chooser_resolution_secure_max|live_delay|internal_cookies|config|manifest_config" library_linux="inputstream.adaptive.so.21.5.18"/>
+  <extension point="kodi.inputstream" name="adaptive" extension="" tags="true" listitemprops="drm_legacy|license_type|license_key|license_url|license_url_append|license_data|license_flags|manifest_type|server_certificate|manifest_update_parameter|manifest_upd_params|manifest_params|manifest_headers|stream_params|stream_headers|original_audio_language|play_timeshift_buffer|pre_init_data|stream_selection_type|chooser_bandwidth_max|chooser_resolution_max|chooser_resolution_secure_max|live_delay|internal_cookies|config|manifest_config" library_linux="inputstream.adaptive.so.21.5.25"/>
   <extension point="xbmc.addon.metadata">
     <platform/>
     <license>GPL-2.0-or-later</license>

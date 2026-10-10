@@ -1,7 +1,34 @@
-v21.5.18-p3i.1 (2026-05-15)
-- [ClearKey] Backport CBCS support so HLS+ClearKey (SAMPLE-AES) plays (port of upstream master 37e01a06)
-- [ClearKey] Drop AES_CTR-only gate in CreateSingleSampleDecrypter; accept AES_CBC and NONE
-- p3i-only build; not an upstream release
+v21.5.25-p3i.1 (2026-10-10)
+- Update to upstream Omega 21.5.25
+- Retain the p3i ClearKey CBCS backport for HLS SAMPLE-AES playback
+
+v21.5.25 (2026-09-26)
+[Widevine] Removed ARM64 CDM workaround, official WV library is now available
+
+v21.5.24 (2026-08-30)
+- Fix potential crashes on multi-periods live streams when updating manifest
+- [HLS] Fix manifest update intervals when a manifest update fails
+
+v21.5.23 (2026-08-13)
+- Fix TS demuxer from possible invalid PSI registration causing crashes
+
+v21.5.22 (2026-07-01)
+- Fix TS demuxer to validate PSI sections, prevent possible crashes
+- Fix TS demuxer to support large H264 SPS/PPS extradata, cause of broken playback (e.g. Wowza)
+
+v21.5.21 (2026-06-23)
+- Fix HTTP encodings from previous release
+
+v21.5.20 (2026-06-21)
+- Add support to other HTTP encodings such as x-gzip
+- [HLS] Add support to m4f extension
+- [HLS] Add support to encrypted AES-128 init data
+
+v21.5.19 (2026-06-12)
+- [Dash] Improved support to MPD SegmentBase with multi-periods
+- Fix missing subtitles due to unsupported SegmentBase with multi-periods
+- Fix problem detecting resolution change (adaptive stream selection)
+- Fix broken playback with TS H264 streams that use higher codec levels
 
 v21.5.18 (2025-12-02)
 - Fix possible corrupted PPS/SPS data on TS H264
