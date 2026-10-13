@@ -29,4 +29,3 @@ msgstr ""
 msgctxt "#30005"
 msgid "Reset failed: {0}"
 msgstr ""
-

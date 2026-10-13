@@ -29,4 +29,3 @@ msgstr "Reset angefordert. Warten, bis Receiver und Fernseher die Verbindung wie
 msgctxt "#30005"
 msgid "Reset failed: {0}"
 msgstr "Reset fehlgeschlagen: {0}"
-
