@@ -3168,4 +3168,19 @@ provider-name="jurialmunkey">
         </assets>
     </extension>
 </addon>
+<addon id="script.hdmi.reset" name="p3i HDMI Reset" version="1.0.1" provider-name="pannal">
+  <requires><import addon="xbmc.python" version="3.0.0" /></requires>
+  <extension point="xbmc.python.script" library="default.py"><provides>executable</provides></extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Manually recover an Amlogic HDMI connection.</summary>
+    <summary lang="de_DE">Eine Amlogic-HDMI-Verbindung manuell wiederherstellen.</summary>
+    <description lang="en_GB">Optional recovery tool for the p3i CoreELEC build. Briefly disables the HDMI transmitter, then re-enables it to let the receiver and TV reacquire the signal. Useful as a manual workaround for HDMI sync problems reported with some Denon receivers. Video and audio are interrupted briefly. Requires a writable Amlogic HDMI PHY control. Can be assigned to a remote button. Does not run automatically or repair the underlying sync problem.</description>
+    <description lang="de_DE">Optionales Wiederherstellungswerkzeug für den p3i-CoreELEC-Build. Schaltet den HDMI-Sender kurz aus und wieder ein, damit Receiver und Fernseher das Signal neu erkennen können. Dient als manueller Workaround für HDMI-Synchronisationsprobleme, die mit einigen Denon-Receivern gemeldet wurden. Bild und Ton werden kurz unterbrochen. Erfordert einen beschreibbaren Amlogic-HDMI-PHY-Zugriff. Kann einer Fernbedienungstaste zugewiesen werden. Läuft nicht automatisch und behebt nicht das zugrunde liegende Synchronisationsproblem.</description>
+    <platform>linux</platform>
+    <license>MIT</license>
+    <source>https://github.com/pannal/p3i_repo</source>
+    <assets><icon>icon.png</icon></assets>
+  </extension>
+</addon>
+
 </addons>

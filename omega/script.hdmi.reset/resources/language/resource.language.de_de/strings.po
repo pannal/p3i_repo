@@ -1,0 +1,32 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: script.hdmi.reset\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "#30000"
+msgid "p3i HDMI Reset"
+msgstr "p3i HDMI Reset"
+
+msgctxt "#30001"
+msgid "A reset is already running."
+msgstr "Ein Reset wird bereits ausgeführt."
+
+msgctxt "#30002"
+msgid "Amlogic HDMI PHY control is unavailable or not writable."
+msgstr "Der Amlogic-HDMI-PHY-Zugriff ist nicht verfügbar oder nicht beschreibbar."
+
+msgctxt "#30003"
+msgid "Check passed: HDMI PHY is writable. No reset performed."
+msgstr "Prüfung erfolgreich: HDMI-PHY ist beschreibbar. Es wurde kein Reset ausgeführt."
+
+msgctxt "#30004"
+msgid "Reset requested. Wait for the receiver and TV to reconnect."
+msgstr "Reset angefordert. Warten, bis Receiver und Fernseher die Verbindung wiederherstellen."
+
+msgctxt "#30005"
+msgid "Reset failed: {0}"
+msgstr "Reset fehlgeschlagen: {0}"
+
