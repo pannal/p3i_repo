@@ -1,3 +1,7 @@
+[B]8.8.21[/B]
+• Show VAR instead of IMAX when DV active-area detection cannot establish consistent framing.
+• Keep border-detection startup progress visible during fullscreen playback and in the information view.
+
 [B]8.8.20[/B]
 • Show max target luminance for player-led DV in PPI
 • Use bullet (U+2022) instead of math dot as UI separator
