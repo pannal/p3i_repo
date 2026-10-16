@@ -170,6 +170,8 @@ class SBPlayer(xbmc.Player):
     def _maybe_toggle(self):
         if not self._enabled():
             return
+        if not self.isPlayingVideo():
+            return
         if util.pm4k_running():
             util.debug("PM4K is running, deferring")
             return
