@@ -3,7 +3,7 @@ from jurialmunkey.ftools import cached_property
 from tmdbhelper.lib.monitor.images import ImageFunctions
 from tmdbhelper.lib.monitor.common import CommonMonitorFunctions
 from tmdbhelper.lib.addon.plugin import get_condvisibility, get_infolabel, get_setting
-from tmdbhelper.lib.monitor.scrobbler import PlayerScrobbler
+from tmdbhelper.lib.monitor.scrobbler import PlayerScrobblerFactory
 
 
 class PlayerItem():
@@ -161,6 +161,7 @@ class PlayerItem():
                 item_type='episode',
                 season=self.season,
                 episode=self.episode,
+                imdb_id=self.imdb_id,
             )
         return self.infolabel_uniqueid_tmdb
 
@@ -253,7 +254,9 @@ class PlayerMonitor(Player, CommonMonitorFunctions):
         if not self.scrobbler:
             return
         self.scrobbler_update()
-        self.scrobbler.start(self.tmdb_type, self.tmdb_id)
+        self.scrobbler.start(
+            self.tmdb_type, self.tmdb_id,
+            paused=get_condvisibility("Player.Paused"))
 
     def scrobbler_pause(self):
         if not self.scrobbler:
@@ -433,7 +436,7 @@ class PlayerMonitor(Player, CommonMonitorFunctions):
 
         # Update scrobbler
         self.scrobbler_stop()
-        self.scrobbler = PlayerScrobbler(trakt_api=self.trakt_api, total_time=self.getTotalTime())
+        self.scrobbler = PlayerScrobblerFactory(total_time=self.getTotalTime())
 
         # Clear properties and store the last cleared item
         self.previous_item = self.current_item
@@ -453,6 +456,6 @@ class PlayerMonitor(Player, CommonMonitorFunctions):
         # Update our properties
         self.set_properties(self.details)
 
-        # Start Trakt trakt_scrobbling. Wait for seek in case of resuming.
+        # Start the selected scrobblers after any resume seek.
         self.wait_for_seek(10)
         self.scrobbler_start()

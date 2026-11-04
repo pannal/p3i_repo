@@ -4,6 +4,10 @@
 
 
 def test_func(test_func, dialog_output=False, **kwargs):
+    if test_func in ('trakt_response', 'trakt_auth', 'get_response_sync'):
+        from tmdbhelper.lib.script.method.trakt import run_trakt_diagnostic
+        return run_trakt_diagnostic(
+            'test_func', test_func=test_func, dialog_output=dialog_output, **kwargs)
 
     from timeit import default_timer as timer
     start_time = timer()
@@ -32,27 +36,6 @@ def test_func(test_func, dialog_output=False, **kwargs):
         from tmdbhelper.lib.api.tmdb.users import TMDbUser
         head = path
         data = TMDbUser().get_authorised_response_json(path, **kwargs)
-        return finalise(head, data)
-
-    def test_func_trakt_response(path, **kwargs):
-        from tmdbhelper.lib.api.trakt.api import TraktAPI
-        head = path
-        data = TraktAPI().get_response(path, **kwargs)
-        data = {'headers': dict(data.headers), 'request': data.json()}
-        return finalise(head, data)
-
-    def test_func_trakt_auth(**kwargs):
-        from tmdbhelper.lib.api.trakt.api import TraktAPI
-        tapi = TraktAPI()
-        head = ''
-        data = {'authorization': tapi.authenticator.authorization}
-        return finalise(head, data)
-
-    def test_func_mdblist_response(path, **kwargs):
-        from tmdbhelper.lib.api.mdblist.api import MDbList
-        head = path
-        data = MDbList().get_response(path, **kwargs)
-        data = {'headers': dict(data.headers), 'request': data.json()}
         return finalise(head, data)
 
     def test_func_fanarttv(ftv_type, ftv_id, **kwargs):
@@ -99,22 +82,15 @@ def test_func(test_func, dialog_output=False, **kwargs):
         xbmcgui.Dialog().select(head, data, useDetails=True)
 
     def test_func_sync_next_episodes(import_attr, **kwargs):
-        from tmdbhelper.lib.api.trakt.api import TraktAPI
-        from tmdbhelper.lib.api.trakt.sync.datatype import SyncNextEpisodes
-        sync = SyncNextEpisodes(TraktAPI().trakt_syncdata, 'show')
+        from tmdbhelper.lib.sync.datasync import SyncDataFactory
+        syncdata = SyncDataFactory()
+        sync = syncdata.create_sync('SyncNextEpisodes', 'show')
+        if sync is None:
+            return
         func = getattr(sync, import_attr)
         head = import_attr
         data = func(**kwargs)
         return finalise(head, data, affix=import_attr)
-
-    def test_func_get_response_sync(path, **kwargs):
-        from tmdbhelper.lib.api.trakt.api import TraktAPI
-        trakt_api = TraktAPI()
-        path = trakt_api.get_request_url(path, **kwargs)
-        data = trakt_api.get_api_request(path, headers=trakt_api.headers)
-        data = data.json()
-        head = path
-        return finalise(head, data)
 
     def test_func_write_user_art(aspect, icon, parent_id, **kwargs):
         from tmdbhelper.lib.items.database.database import ItemDetailsDatabase
@@ -143,29 +119,25 @@ def test_func(test_func, dialog_output=False, **kwargs):
         head = path
         return finalise(head, data)
 
-    def test_func_gemini(prompt, **kwargs):
-        from tmdbhelper.lib.api.gemini.api import Gemini
-        data = Gemini().get_prompt_text_parsed(prompt)
-        head = prompt
-        return finalise(head, data)
+    def test_func_clear_lactivity(**kwargs):
+        from jurialmunkey.window import get_property
+        from tmdbhelper.lib.addon.consts import LASTACTIVITIES_DATA
+        get_property(LASTACTIVITIES_DATA, clear_property=True)
+        return
 
     routes = {
         'response': test_func_response,
-        'trakt_response': test_func_trakt_response,
         'tmdbuser_response': test_func_tmdbuser_response,
-        'mdblist_response': test_func_mdblist_response,
         'baseitem_factory': test_func_baseitem_factory,
         'baseview_factory': test_func_baseview_factory,
         'query_database': test_func_query_database,
         'fanarttv': test_func_fanarttv,
         'get_next_episodes': test_func_get_next_episodes,
         'sync_next_episodes': test_func_sync_next_episodes,
-        'get_response_sync': test_func_get_response_sync,
         'write_user_art': test_func_write_user_art,
         'jrpc': test_func_jrpc,
         'jrpc_directory': test_func_jrpc_directory,
-        'trakt_auth': test_func_trakt_auth,
-        'gemini': test_func_gemini,
+        'clear_lactivity': test_func_clear_lactivity,
     }
 
     return routes[test_func](**kwargs)

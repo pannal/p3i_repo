@@ -54,19 +54,19 @@ class MediaItemArtworkRoutes:
             'art_api': 'ftv',
         },
         'art_poster': {
-            'affixes': (None, 'language', 'english', 'null'),
+            'affixes': (None, 'country', 'language', 'english', 'null'),
             'outputs': 'poster',
             'parents': (None, 'tvshow', 'season'),
             'art_api': 'tmdb',
         },
         'art_landscape': {
-            'affixes': (None, 'language', 'english'),
+            'affixes': (None, 'country', 'language', 'english'),
             'outputs': 'landscape',
             'parents': (None, 'tvshow', 'season'),
             'art_api': 'tmdb',
         },
         'art_clearlogo': {
-            'affixes': (None, 'language', 'english', 'null'),
+            'affixes': (None, 'country', 'language', 'english', 'null'),
             'outputs': 'clearlogo',
             'parents': (None, 'tvshow', 'season'),
             'art_api': 'tmdb',
@@ -166,6 +166,9 @@ class MediaItemArtworkRoutes:
                 for route in self.routes.keys())
             if i]
 
+    def get_art_list_country(self, allow_ftv=False, allow_tmdb=False):
+        return self.get_art_list('country', allow_ftv=allow_ftv, allow_tmdb=allow_tmdb)
+
     def get_art_list_language(self, allow_ftv=False, allow_tmdb=False):
         return self.get_art_list('language', allow_ftv=allow_ftv, allow_tmdb=allow_tmdb)
 
@@ -183,6 +186,16 @@ class MediaItemArtworkRoutes:
 
     def get_art_list_ftv_preferred(self, affix=None):
         return self.get_art_list(affix, allow_ftv=True) + self.get_art_list(affix, allow_tmdb=True)
+
+    def get_art_list_country_preferred(self, allow_ftv=False):
+        return self.get_art_list_extra(allow_ftv=allow_ftv, allow_tmdb=True) \
+            + self.get_art_list_country(allow_tmdb=True) \
+            + self.get_art_list_english(allow_tmdb=True) \
+            + self.get_art_list_english(allow_ftv=allow_ftv) \
+            + self.get_art_list_language(allow_tmdb=True) \
+            + self.get_art_list_language(allow_ftv=allow_ftv) \
+            + self.get_art_list_null(allow_tmdb=True) \
+            + self.get_art_list_null(allow_ftv=allow_ftv)
 
     def get_art_list_tmdb_language(self):
         return self.get_art_list_extra(allow_ftv=True, allow_tmdb=True) \
@@ -205,12 +218,16 @@ class MediaItemArtworkRoutes:
     @property
     def base_configured_routes(self):
         if not get_setting('fanarttv_lookup'):
+            if get_setting('regional_prefer'):
+                return self.get_art_list_country_preferred()
             return self.get_art_list(allow_tmdb=True)
         if not get_setting('language_lookup'):
             if get_setting('fanarttv_prefer'):
                 return self.get_art_list_ftv_preferred()
             return self.get_art_list_tmdb_preferred()
         if not get_setting('fanarttv_prefer'):
+            if get_setting('regional_prefer'):  # Fanart TV does not have country so dont apply it when fanarttv is preferred
+                return self.get_art_list_country_preferred(allow_ftv=True)
             return self.get_art_list_tmdb_language()
         return self.get_art_list_ftv_language()
 
@@ -453,8 +470,10 @@ class MediaItem(BaseItem):
         return infoproperties
 
     def get_unique_ids(self, unique_ids, subtype=None):
-        for i in (self.return_basemeta_db('unique_id', subtype).cached_data or ()):
-            unique_ids[self.get_subtype_key(i['key'], subtype)] = i['value']
+        unique_ids.update({
+            self.get_subtype_key(i['key'], subtype): i['value']
+            for i in self.return_basemeta_db('unique_id', subtype).cached_data or ()
+            if i['value'] not in (None, '', 'None')})
         unique_ids[self.get_subtype_key('tmdb', subtype)] = self.parent_db_cache.tmdb_id
         return unique_ids
 

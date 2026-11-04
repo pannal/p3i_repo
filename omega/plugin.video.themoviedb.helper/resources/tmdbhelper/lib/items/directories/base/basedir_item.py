@@ -48,12 +48,22 @@ class BaseDirItem:
             'icon': f'{ADDONPATH}/{self.art_icon}'
         }
 
-    def get_item(self, item_type, mixed_dir=False):
-        return self.item_builder(self, item_type, mixed_dir).item
+    def get_item(self, item_type, mixed_dir=False, type_art=False):
+        return self.item_builder(self, item_type, mixed_dir, type_art=type_art).item
 
 
-class BaseDirItemTraktAuthorised(BaseDirItem):
+class BaseDirItemAuthorised(BaseDirItem):
+    @cached_property
+    def authorisation(self):
+        return self.get_authorisation()
+
+    def get_authorisation(self):
+        raise NotImplementedError
+
+    @property
+    def authorisation_type(self):
+        return self.authorisation.authorisation_type
+
     @property
     def enabled(self):
-        from jurialmunkey.window import get_property
-        return bool(get_property('TraktIsAuth'))
+        return self.authorisation.is_authorized

@@ -1,3 +1,6 @@
+v0.1.7
+- Skip non-video AV starts before checking seamless-branching metadata.
+
 v0.1.6
 - SB/SB.txt marker can now list filenames or fnmatch globs (one per line,
   '#' and ';' comments allowed). When the marker is non-empty, SB only

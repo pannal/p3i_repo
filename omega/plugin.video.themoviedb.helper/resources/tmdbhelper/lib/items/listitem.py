@@ -1,11 +1,13 @@
 from xbmcgui import ListItem as KodiListItem
 from jurialmunkey.ftools import cached_property
-from jurialmunkey.parser import try_int, merge_two_dicts, boolean
+from jurialmunkey.parser import try_int, boolean
 from infotagger.listitem import ListItemInfoTag
+from tmdbhelper.lib.items.database.details.merge import ItemDetailsMerger
 from tmdbhelper.lib.addon.consts import PARAM_WIDGETS_RELOAD, PARAM_WIDGETS_RELOAD_FORCED
 from tmdbhelper.lib.addon.plugin import ADDONPATH, PLUGINPATH, get_condvisibility, get_localized, encode_url, get_flatseasons_info_param, GlobalSettingsDict
 from tmdbhelper.lib.addon.tmdate import is_unaired_timestamp
 from jurialmunkey.window import get_property
+from urllib.parse import parse_qsl
 
 """ Lazyimports
 from tmdbhelper.lib.items.context import ContextMenu
@@ -79,10 +81,19 @@ class BuildURL:
         return {f'paths_{x}': i for x, i in enumerate(self.path_x) if i}
 
     @property
+    def safe_encoded_url(self):
+        path, _, query = self.path.partition('?')
+        params = dict(parse_qsl(query, keep_blank_values=True))
+        params.update(self.params)
+        return encode_url(path, **params)
+
+    @property
     def url(self):
         self.params.update(self.params_reload)
         self.params.update(self.params_widget)
         self.params.update(self.params_path_x)
+        if self.params and self.path.startswith(PLUGINPATH):
+            return self.safe_encoded_url
         return encode_url(self.path, **self.params)
 
 
@@ -185,6 +196,14 @@ class _ListItem(object):
         self.infoproperties.update({'isPlayable': 'true'}) if self.is_resolvable else None
         return self.infoproperties
 
+    @cached_property
+    def action_discovery(self):
+        return self.get_action_discovery()
+
+    def get_action_discovery(self):
+        from tmdbhelper.lib.script.actions.discovery import ActionDiscovery
+        return ActionDiscovery()
+
     def finalise_context_menu(self):
         from tmdbhelper.lib.items.context import ContextMenu
         self.context_menu += ContextMenu(self).get()
@@ -226,7 +245,7 @@ class _ListItem(object):
 
         if self.infoproperties.get('is_sortable'):
             self.params['parent_info'] = self.params['info']
-            self.params['info'] = 'mdblist_sortby' if self.infoproperties['is_sortable'] == 'mdblist' else 'trakt_sortby'  # Reroute sortable lists to display options in skinshortcuts
+            self.params['info'] = self.infoproperties.get('sortby_info') or 'sync_sortby'
 
         if self.params.get('info') == 'search' and not self.params.get('query'):
             self.params['reload'] = 'forced'  # Add param to empty search to ensure reloads
@@ -263,17 +282,18 @@ class _ListItem(object):
     def set_details(self, details=None, reverse=False, override=False, reverse_artwork=False):
         if not details:
             return
-        self.stream_details = merge_two_dicts(details.get('stream_details', {}), self.stream_details, reverse=reverse)
-        self.infolabels = merge_two_dicts(details.get('infolabels', {}), self.infolabels, reverse=reverse)
-        self.infoproperties = merge_two_dicts(details.get('infoproperties', {}), self.infoproperties, reverse=reverse)
-        self.art = merge_two_dicts(details.get('art', {}), self.art, reverse=bool(reverse or reverse_artwork))
-        self.unique_ids = merge_two_dicts(details.get('unique_ids', {}), self.unique_ids, reverse=reverse)
-        self.cast = self.cast or details.get('cast', [])
-        if not override:
-            return
-        self.label = details.get('label') or self.label
-        self.infolabels['title'] = details.get('infolabels', {}).get('title') or self.infolabels.get('title')
-        self.infolabels['tvshowtitle'] = details.get('infolabels', {}).get('tvshowtitle') or self.infolabels.get('tvshowtitle')
+        merger = ItemDetailsMerger(
+            self.get_merge_data(), details,
+            reverse=reverse, override=override, reverse_artwork=reverse_artwork)
+        self.set_merged_details(merger.merged)
+
+    def get_merge_data(self):
+        """The list item data that details are merged with."""
+        return {key: getattr(self, key) for key in ItemDetailsMerger.item_keys}
+
+    def set_merged_details(self, merged):
+        for key, value in merged.items():
+            setattr(self, key, value)
 
     @cached_property
     def url(self):
@@ -558,6 +578,20 @@ class _Season(_Tvshow):
     mediatype = 'season'
     trakt_type = 'season'
 
+    @property
+    def totalepisodes(self):
+        if self.infoproperties.get('specialseason'):
+            return super().totalepisodes
+        if global_setting['seasons_anticipated']:
+            return self.airedepisodes
+        return super().totalepisodes
+
+    @cached_property
+    def is_unaired(self):
+        if not self.infolabels.get('premiered'):
+            return not self.airedepisodes
+        return is_unaired_timestamp(self.infolabels.get('premiered'), True)
+
     def finalise_infoproperties(self):
         super(_Tvshow, self).finalise_infoproperties()  # Skip TV Show additions
         self.infoproperties['totalepisodes'] = self.totalepisodes
@@ -602,17 +636,6 @@ class _Episode(_Video):
     tmdb_type = 'tv'
     ftv_type = 'tv'
     thumb_override = 0
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.label_format = self.init_label_format()
-
-    def init_label_format(self):
-        if boolean(self.infoproperties.pop('no_label_formatting', False)):
-            return '{label}'
-        if not self.episode or self.season is None:
-            return '{label}'
-        return '{season}x{episode:0>2}. {label}'
 
     @property
     def playcount(self):
@@ -659,8 +682,22 @@ class _Episode(_Video):
     def title(self):
         return self.infolabels.get('title') or self.label
 
+    @property
+    def label_season(self):
+        return self.infoproperties.get('group_season') or self.season
+
+    @property
+    def label_episode(self):
+        return self.infoproperties.get('group_episode') or self.episode
+
+    @cached_property
+    def label_format(self):
+        if not self.label_episode or self.label_season is None:
+            return '{label}'
+        return '{season}x{episode:0>2}. {label}'
+
     def finalise_label(self):
-        self.label = self.label_format.format(season=self.season, episode=self.episode, label=self.title)
+        self.label = self.label_format.format(season=self.label_season, episode=self.label_episode, label=self.title)
         self.label = super().finalise_label()
         return self.label
 

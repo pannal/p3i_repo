@@ -1,3 +1,4 @@
+from requests.utils import requote_uri
 from tmdbhelper.lib.items.database.basemeta_factories.concrete_classes.baseclass import ItemDetailsList, ArtworkDetailsMixin
 
 
@@ -17,12 +18,11 @@ class FanartTVType(ArtworkDetailsMixin, FanartTV):
 
     def get_cached_data_by_language(self):
         # Override country lookup as fanart tv only has language
-        # return self.get_cached_data_by_iso_country() or self.get_cached_data_by_iso_language()
         return self.get_cached_data_by_iso_language()
 
     @staticmethod
     def image_path_func(v):
-        return v.replace(' ', '%20')  # Ugly hack to replace unencoded spaces returned by API
+        return requote_uri(v)
 
 
 class FanartTVPoster(FanartTVType):

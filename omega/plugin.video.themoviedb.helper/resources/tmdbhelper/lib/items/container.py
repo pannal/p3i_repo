@@ -2,7 +2,7 @@ from jurialmunkey.parser import boolean
 from jurialmunkey.ftools import cached_property
 from tmdbhelper.lib.addon.consts import NO_UNAIRED_LABEL
 from tmdbhelper.lib.addon.plugin import get_setting, executebuiltin, get_localized
-from tmdbhelper.lib.api.contains import CommonContainerAPIs
+from tmdbhelper.lib.api.contains import CommonContainerAPIs, CommonRatingsAPIs
 from tmdbhelper.lib.addon.logger import TimerList
 
 
@@ -14,8 +14,10 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
     container_update = ''  # Add path to call Containr.Update({}) at end of directory
     container_refresh = False  # True call Container.Refresh at end of directory
     sort_by_dbid = False
-    kodi_db = None
+    kodi_details = False  # Permit Kodi library details; the item detail service applies the user's setting
+    sync_details = True  # Permit synced play data; the item detail service applies the user's setting
     thumb_override = 0
+    tmdb_id_lookup_params = ('imdb_id', 'tvdb_id', 'query', 'use_multisearch')  # Inputs that can resolve a tmdb_id
 
     def __init__(self, handle, paramstring, **kwargs):
         # plugin:// params configuration
@@ -70,6 +72,10 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         return boolean(self.params.get('detailed', False))
 
     @cached_property
+    def is_ratings(self):
+        return boolean(self.params.get('ratings', False))
+
+    @cached_property
     def is_translated(self):
         return boolean(self.params.get('translated', False))
 
@@ -84,16 +90,9 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         return get_setting('contextmenu_make_node') if not self.is_widget else False
 
     @cached_property
-    def is_excluded(self):
-        from tmdbhelper.lib.items.filters import is_excluded
-        return is_excluded
-
-    @cached_property
-    def trakt_playdata(self):
-        from tmdbhelper.lib.items.trakt import TraktPlayData
-        return TraktPlayData(
-            watchedindicators=get_setting('trakt_watchedindicators'),
-            pauseplayprogress=get_setting('trakt_watchedindicators'))
+    def sync_playdata(self):
+        from tmdbhelper.lib.items.sync import SyncPlayData
+        return SyncPlayData()
 
     @cached_property
     def pagination(self):
@@ -102,19 +101,6 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         if self.is_widget and not get_setting('widgets_nextpage'):
             return False
         return True
-
-    @cached_property
-    def kodi_db_preferred(self):
-        if get_setting('use_kodi_local_db', 'int') == 2:
-            return True  # Overwrite TMDb data with Kodi DB data
-        return False  # Compliment missing TMDb data with Kodi Db data
-
-    def get_kodi_database(self, tmdb_type):
-        if get_setting('use_kodi_local_db', 'int') == 0:
-            return
-        with TimerList(self.timer_lists, 'get_kodi', log_threshold=0.001, logging=self.log_timers):
-            from tmdbhelper.lib.items.kodi import KodiDb
-            return KodiDb(tmdb_type)
 
     @cached_property
     def format_unaired_labels(self):
@@ -128,44 +114,34 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
     def only_unaired(self):
         return boolean(self.parent_params.get('only_unaired'))
 
+    @cached_property
+    def item_finaliser(self):
+        from tmdbhelper.lib.items.finaliser import ItemFinaliser
+        return ItemFinaliser
+
+    @cached_property
+    def list_finaliser(self):
+        from tmdbhelper.lib.items.finaliser import ListFinaliser
+        return ListFinaliser
+
+    @cached_property
+    def action_discovery(self):
+        return self.get_action_discovery()
+
+    def get_action_discovery(self):
+        from tmdbhelper.lib.script.actions.discovery import ActionDiscovery
+        return ActionDiscovery(self.sync_playdata.syncdata)
+
+    def get_item_finaliser(self, li):
+        li.action_discovery = self.action_discovery
+        return self.item_finaliser(self, li)
+
     def make_item(self, li):
-        if not li:
-            return
-
-        def finalise_next_page():
-            li.params['cacheonly'] = self.is_cacheonly
-            li.params['plugin_category'] = self.plugin_category  # Carry the plugin category to next page in plugin:// path
-            return li.finalise()
-
-        def finalise_mediaitem():
-            # Check if unaired and either apply special formatting or hide item depending on user settings
-            li.format_unaired_labels = bool(self.format_unaired_labels and not li.infoproperties.get('specialseason'))
-            if li.format_unaired_labels and self.hide_unaired and li.is_unaired:
-                return
-            if li.format_unaired_labels and self.only_unaired and not li.is_unaired:
-                return
-
-            # Add details from Kodi library
-            try:
-                li.set_details(details=self.kodi_db.get_kodi_details(li), reverse=self.kodi_db_preferred)
-            except AttributeError:
-                pass
-
-            # Filter out items that are excluded (done after adding Kodi details so can filter against them)
-            if self.is_excluded(li, is_listitem=True, **self.filters):
-                return
-
-            li.context_additions = self.context_additions
-            li.thumb_override = self.thumb_override
-            li.infoproperties_additions['widget'] = self.plugin_category
-            li.infoproperties_additions.update(self.property_params)
-
-            return li.finalise()
-
-        return finalise_next_page() if li.next_page else finalise_mediaitem()
+        ci = self.get_item_finaliser(li)
+        return ci.item if ci else None
 
     def make_items(self, items):
-        make_items = [self.make_item(i) for i in items if i]
+        make_items = self.list_finaliser(self, items).items
         make_items = self.sort_items_by_dbid(make_items) if self.sort_by_dbid else make_items
         return make_items
 
@@ -216,13 +192,6 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         elif lengths.index(max(lengths)) == 4:
             self.container_content = 'episodes'
 
-        if lengths[0] and (lengths[1] or lengths[3] or lengths[4]):
-            self.kodi_db = self.get_kodi_database('both')
-        elif lengths[0]:
-            self.kodi_db = self.get_kodi_database('movie')
-        elif (lengths[1] or lengths[3] or lengths[4]):
-            self.kodi_db = self.get_kodi_database('tv')
-
     def set_params_to_container(self):
         params = {f'param.{k}': f'{v}' for k, v in self.params.items() if k and v}
         if self.handle == -1:
@@ -258,7 +227,20 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
         if self.params.get('tmdb_id'):
             return
 
+        if not self.has_tmdb_id_lookup_params:
+            self.params['tmdb_id'] = None  # Nothing to look up, so skip loading the query database
+            return
+
         self.params['tmdb_id'] = self.query_database.get_tmdb_id(**self.params)
+
+    @property
+    def has_tmdb_id_lookup_params(self):
+        return any(self.params.get(k) for k in self.tmdb_id_lookup_params)
+
+    def prepare_item_details(self):
+        """ Abstract method to prepare item details while the list is retrieved
+        """
+        return
 
     def get_items(self, **kwargs):
         """ Abstract method for getting items
@@ -272,7 +254,7 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
     def get_directory(self, items_only=False, build_items=True):
 
         with TimerList(self.timer_lists, 'total', logging=self.log_timers):
-            self.trakt_playdata.pre_sync_start(**self.params)
+            self.prepare_item_details()
 
             items = self.get_directory_items()
 
@@ -284,9 +266,6 @@ class ContainerDirectoryCommon(CommonContainerAPIs):
 
             self.property_params.update(self.set_params_to_container())
             self.plugin_category = self.params.get('plugin_category') or self.plugin_category
-
-            with TimerList(self.timer_lists, '--sync', log_threshold=0.001, logging=self.log_timers):
-                self.trakt_playdata.pre_sync_join()
 
             with TimerList(self.timer_lists, 'add_items', logging=self.log_timers):
                 items = self.build_items(items)
@@ -328,9 +307,35 @@ class ContainerDirectory(ContainerDirectoryCommon):
         lidc.cache_refresh = self.lidc_cache_refresh
         lidc.cache_translations = self.is_translated
         lidc.extendedinfo = self.is_detailed
-        lidc.timer_lists = self.timer_lists
-        lidc.log_timers = self.log_timers
+        lidc.kodi_details = self.kodi_details
+        lidc.sync_details = self.sync_details
         return lidc
+
+    def prepare_item_details(self):
+        self.lidc.prepare(**self.params)
+
+    def build_ratings_item(self, li):
+        if not li or not li.tmdb_id:
+            return li
+        if li.tmdb_type not in ('movie', 'tv'):
+            return li
+
+        ratings_api = CommonRatingsAPIs()
+        ratings_api.tmdb_type = li.tmdb_type
+        ratings_api.tmdb_id = li.tmdb_id
+        ratings_api.season = li.season
+        ratings_api.episode = li.episode
+
+        li.infoproperties.update(ratings_api.all_ratings_no_awards)
+        return li
+
+    def build_ratings_items(self, items):
+        if not self.is_ratings:
+            return items
+        from tmdbhelper.lib.addon.thread import ParallelThread
+        with ParallelThread(items, self.build_ratings_item) as pt:
+            items = pt.queue
+        return [i for i in items if i]
 
     def build_detailed_item(self, li):
         if li.infoproperties.get('label_override'):
@@ -342,8 +347,9 @@ class ContainerDirectory(ContainerDirectoryCommon):
         return li
 
     def build_detailed_items(self, items):
-        with TimerList(self.timer_lists, '--build', log_threshold=0.001, logging=self.log_timers):
+        with TimerList(self.timer_lists, '--lidc', log_threshold=0.001, logging=self.log_timers):
             items = self.lidc.configure_listitems_threaded(items)
+            items = self.build_ratings_items(items)
             return [i for i in (self.build_detailed_item(li) for li in items if li) if i]
 
 

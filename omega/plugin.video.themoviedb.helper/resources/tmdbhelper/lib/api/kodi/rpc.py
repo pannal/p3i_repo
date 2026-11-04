@@ -9,19 +9,38 @@ set_playprogress = jurialmunkey_jsnrpc.set_playprogress
 get_directory = jurialmunkey_jsnrpc.get_directory
 
 
+MOVIE_DETAILS_PROPERTIES = [
+    "title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle",
+    "writer", "studio", "mpaa", "cast", "country", "imdbnumber", "runtime", "set",
+    "showlink", "streamdetails", "top250", "votes", "fanart", "thumbnail", "file", "sorttitle", "setid",
+    "dateadded", "tag", "art", "userrating", "ratings", "premiered", "uniqueid"]
+
+TVSHOW_DETAILS_PROPERTIES = [
+    "title", "genre", "year", "rating", "plot", "studio", "mpaa", "cast", "episode", "imdbnumber",
+    "premiered", "votes", "fanart", "thumbnail", "file", "originaltitle", "sorttitle", "episodeguide",
+    "season", "dateadded", "tag", "art", "userrating", "ratings", "runtime", "uniqueid"]
+
+
 def get_jsonrpc(method=None, params=None, query_id=1):
     return jurialmunkey_jsnrpc.get_jsonrpc(method, params, query_id)
 
 
-def get_kodi_library(tmdb_type, tvshowid=None, cache_refresh=False):
+def get_kodi_library(tmdb_type, tvshowid=None, cache_refresh=False, cache=None):
+    """cache: optionally a MemoryCache-compatible cache to use instead of window properties."""
     if tmdb_type == 'movie':
-        return KodiLibrary(dbtype='movie', cache_refresh=cache_refresh)
+        return KodiLibrary(dbtype='movie', cache_refresh=cache_refresh, cache=cache)
     if tmdb_type == 'tv':
-        return KodiLibrary(dbtype='tvshow', cache_refresh=cache_refresh)
+        return KodiLibrary(dbtype='tvshow', cache_refresh=cache_refresh, cache=cache)
     if tmdb_type in ['season', 'episode'] and tvshowid:
-        return KodiLibrary(dbtype=tmdb_type, tvshowid=tvshowid, cache_refresh=cache_refresh)
+        return KodiLibrary(dbtype=tmdb_type, tvshowid=tvshowid, cache_refresh=cache_refresh, cache=cache)
     if tmdb_type == 'both':
-        return KodiLibrary(dbtype='both', cache_refresh=cache_refresh)
+        return KodiLibrary(dbtype='both', cache_refresh=cache_refresh, cache=cache)
+
+
+def get_mapped_details(details, dbid, key):
+    from tmdbhelper.lib.api.kodi.mapping import ItemMapper
+    details['dbid'] = dbid
+    return ItemMapper(key=key).get_info(details)
 
 
 def get_item_details(dbid=None, method=None, key=None, properties=None):
@@ -33,42 +52,66 @@ def get_item_details(dbid=None, method=None, key=None, properties=None):
     try:
         details = get_jsonrpc(method, params)
         details = details['result'][f'{key}details']
-        details['dbid'] = dbid
-        from tmdbhelper.lib.api.kodi.mapping import ItemMapper
-        return ItemMapper(key=key).get_info(details)
+        return get_mapped_details(details, dbid, key)
     except (AttributeError, KeyError):
         return {}
 
 
 def get_movie_details(dbid=None):
-    properties = [
-        "title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle",
-        "lastplayed", "playcount", "writer", "studio", "mpaa", "cast", "country", "imdbnumber", "runtime", "set",
-        "showlink", "streamdetails", "top250", "votes", "fanart", "thumbnail", "file", "sorttitle", "resume", "setid",
-        "dateadded", "tag", "art", "userrating", "ratings", "premiered", "uniqueid"]
-    return get_item_details(dbid=dbid, method="VideoLibrary.GetMovieDetails", key="movie", properties=properties)
+    return get_item_details(
+        dbid=dbid, method="VideoLibrary.GetMovieDetails",
+        key="movie", properties=MOVIE_DETAILS_PROPERTIES)
 
 
 def get_tvshow_details(dbid=None):
-    properties = [
-        "title", "genre", "year", "rating", "plot", "studio", "mpaa", "cast", "playcount", "episode", "imdbnumber",
-        "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file", "originaltitle", "sorttitle", "episodeguide",
-        "season", "watchedepisodes", "dateadded", "tag", "art", "userrating", "ratings", "runtime", "uniqueid"]
-    return get_item_details(dbid=dbid, method="VideoLibrary.GetTVShowDetails", key="tvshow", properties=properties)
+    return get_item_details(
+        dbid=dbid, method="VideoLibrary.GetTVShowDetails",
+        key="tvshow", properties=TVSHOW_DETAILS_PROPERTIES)
+
+
+def get_list_details(titles, dbids, method, key, properties):
+    """Map candidates by the Kodi IDs already selected by the library matcher."""
+    if not titles or not dbids:
+        return {}
+    params = {
+        'properties': properties,
+        'filter': {'field': 'title', 'operator': 'is', 'value': titles},
+    }
+    response = get_jsonrpc(method, params)
+    try:
+        details = response['result'][f'{key}s']
+    except KeyError:
+        return {}
+    return {
+        item[f'{key}id']: get_mapped_details(item, item[f'{key}id'], key)
+        for item in details if item[f'{key}id'] in dbids
+    }
+
+
+def get_movie_list_details(titles, dbids):
+    return get_list_details(
+        titles, dbids, method='VideoLibrary.GetMovies',
+        key='movie', properties=MOVIE_DETAILS_PROPERTIES)
+
+
+def get_tvshow_list_details(titles, dbids):
+    return get_list_details(
+        titles, dbids, method='VideoLibrary.GetTVShows',
+        key='tvshow', properties=TVSHOW_DETAILS_PROPERTIES)
 
 
 def get_season_details(dbid=None):
     properties = [
-        "season", "showtitle", "playcount", "episode", "fanart", "thumbnail", "tvshowid", "watchedepisodes",
+        "season", "showtitle", "episode", "fanart", "thumbnail", "tvshowid",
         "art", "userrating", "title"]
     return get_item_details(dbid=dbid, method="VideoLibrary.GetSeasonDetails", key="season", properties=properties)
 
 
 def get_episode_details(dbid=None):
     properties = [
-        "title", "plot", "votes", "rating", "writer", "firstaired", "playcount", "runtime", "director", "productioncode",
-        "season", "episode", "originaltitle", "showtitle", "cast", "streamdetails", "lastplayed", "fanart", "thumbnail",
-        "file", "resume", "tvshowid", "dateadded", "uniqueid", "art", "specialsortseason", "specialsortepisode", "userrating",
+        "title", "plot", "votes", "rating", "writer", "firstaired", "runtime", "director", "productioncode",
+        "season", "episode", "originaltitle", "showtitle", "cast", "streamdetails", "fanart", "thumbnail",
+        "file", "tvshowid", "dateadded", "uniqueid", "art", "specialsortseason", "specialsortepisode", "userrating",
         "seasonid", "ratings"]
     return get_item_details(dbid=dbid, method="VideoLibrary.GetEpisodeDetails", key="episode", properties=properties)
 
@@ -77,11 +120,13 @@ THREAD_LOCK = 'TMDbHelper.KodiLibrary.ThreadLock'
 
 
 class KodiLibrary(object):
-    def __init__(self, dbtype=None, tvshowid=None, logging=True, cache_refresh=False):
+    def __init__(self, dbtype=None, tvshowid=None, logging=True, cache_refresh=False, cache=None):
         self._dbtype = dbtype
         self._tvshowid = tvshowid
         self._logging = logging
         self._cache_refresh = cache_refresh
+        if cache is not None:
+            self._cache = cache
 
     @property
     def cache(self):
@@ -193,7 +238,7 @@ class KodiLibrary(object):
         yearcheck = False
         index_list = find_dict_in_list(self.database, 'dbid', dbid) if dbid else []
 
-        if not index_list and season:
+        if not index_list and season is not None:
             index_list = find_dict_in_list(self.database, 'season', try_int(season))
         if not index_list and imdb_id:
             index_list = find_dict_in_list(self.database, 'imdb_id', imdb_id)
@@ -209,13 +254,13 @@ class KodiLibrary(object):
             index_list = find_dict_in_list(self.database, 'title', title)
 
         for i in index_list:
-            if season and episode:
+            if season is not None and episode is not None:
                 if try_int(episode) == self.database[i].get('episode'):
                     return self.database[i].get(info)
             elif not yearcheck or yearcheck in str(self.database[i].get('year')):
                 return self.database[i].get(info)
 
-        if index_list and fuzzy_match and not season and not episode:
+        if index_list and fuzzy_match and season is None and episode is None:
             """ Fuzzy Match """
             i = index_list[0]
             return self.database[i].get(info)

@@ -52,69 +52,18 @@ class BaseDirItemMainTMDb(BaseDirItemMainMovie):
     art_icon = 'resources/icons/themoviedb/default.png'
 
 
-class BaseDirItemMainTMDbv4(BaseDirItemMainMovie):
-    priority = 170
-    label_localized = 32079
-    params = {'info': 'dir_tmdb_v4'}
-    art_icon = 'resources/icons/themoviedb/default.png'
-
-
-class BaseDirItemMainTrakt(BaseDirItemMainMovie):
-    priority = 180
-    label = 'Trakt'
-    params = {'info': 'dir_trakt'}
-    art_icon = 'resources/trakt.png'
-
-
-class BaseDirItemMainTraktDiscover(BaseDirItemMainMovie):
-    priority = 185
-    label = 'Trakt Discover'
-    params = {'info': 'dir_trakt_discover'}
-    art_icon = 'resources/trakt.png'
-
-
-class BaseDirItemMainTVDb(BaseDirItemMainMovie):
-    priority = 190
-    label = 'TVDb'
-    params = {'info': 'dir_tvdb'}
-    art_icon = 'resources/icons/tvdb/tvdb.png'
-
-
-class BaseDirItemMainMDbList(BaseDirItemMainMovie):
-    priority = 200
-    label = 'MDbList'
-    params = {'info': 'dir_mdblist'}
-    art_icon = 'resources/icons/mdblist/mdblist.png'
-
-    @property
-    def enabled(self):
-        from tmdbhelper.lib.addon.plugin import get_setting
-        return bool(get_setting('mdblist_apikey', 'str'))
-
-
-class BaseDirItemMainGemini(BaseDirItemMainMovie):
-    priority = 205
-    label_localized = 32149
-    label_type = 'suffixed'
-    params = {'info': 'gemini'}
-    art_icon = 'resources/icons/gemini/gemini.png'
-
-    @property
-    def label_suffix(self):
-        from tmdbhelper.lib.addon.plugin import get_localized
-        return get_localized(32223)
-
-    @property
-    def enabled(self):
-        from tmdbhelper.lib.api.gemini.api import Gemini
-        return bool(Gemini.api_key)
+class BaseDirItemMainSync(BaseDirItemMainMovie):
+    priority = 175
+    label_localized = 32403
+    params = {'info': 'dir_sync'}
+    art_icon = 'resources/icons/sync/default.png'
 
 
 class BaseDirItemMain(BaseDirItemMainMovie):
     priority = 210
     label = 'Nodes'
     params = {'info': 'dir_custom_node'}
-    art_icon = 'resources/icons/themoviedb/default.png'
+    art_icon = 'resources/icons/themoviedb/nodes.png'
 
 
 class BaseDirItemMainSettings(BaseDirItemMainMovie):

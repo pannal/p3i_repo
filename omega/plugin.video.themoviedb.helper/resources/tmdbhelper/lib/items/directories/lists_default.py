@@ -227,6 +227,7 @@ class ListSliceProperties(ListProperties):
 class ListDefault(ContainerDefaultCacheDirectory):
 
     list_properties_class = ListProperties
+    kodi_details = True
 
     @cached_property
     def list_properties(self):
@@ -239,22 +240,17 @@ class ListDefault(ContainerDefaultCacheDirectory):
         list_properties.filters = self.filters
         list_properties.pagination = self.pagination
         list_properties.tmdb_api = self.tmdb_api
-        list_properties.trakt_api = self.trakt_api
         list_properties.is_cacheonly = self.is_cacheonly
         list_properties.class_name = f'{self.__class__.__name__}'
         return list_properties
 
     @cached_property
     def sort_by_dbid(self):
-        if not self.kodi_db:
+        if not self.kodi_details:
             return False
         if not self.list_properties.dbid_sorted:
             return False
         return True
-
-    @cached_property
-    def kodi_db(self):
-        return self.get_kodi_database(self.list_properties.tmdb_type)
 
     def get_items(self, tmdb_type, page=1, length=None, **kwargs):
         self.list_properties.tmdb_type = tmdb_type

@@ -7,9 +7,13 @@ class DatabaseMaintenance:
 
     next_vacuum = 0
     next_delete = 0
+    next_image_cleanup = 0
 
     vacuum_interval = 60 * 60 * 6
     delete_interval = 60 * 60 * 24
+    image_cleanup_interval = 60 * 60 * 2
+
+    allow_during_video_playback = False
 
     legacy_databases_folders = (
         'database',
@@ -36,6 +40,10 @@ class DatabaseMaintenance:
         from tmdbhelper.lib.addon.tmdate import set_timestamp
         self.next_delete = set_timestamp(self.delete_interval)
 
+    def set_next_image_cleanup(self):
+        from tmdbhelper.lib.addon.tmdate import set_timestamp
+        self.next_image_cleanup = set_timestamp(self.image_cleanup_interval)
+
     @property
     def is_next_vacuum(self):
         from tmdbhelper.lib.addon.tmdate import get_timestamp
@@ -45,6 +53,36 @@ class DatabaseMaintenance:
     def is_next_delete(self):
         from tmdbhelper.lib.addon.tmdate import get_timestamp
         return bool(not get_timestamp(self.next_delete))
+
+    @property
+    def is_next_image_cleanup(self):
+        from tmdbhelper.lib.addon.tmdate import get_timestamp
+        return bool(not get_timestamp(self.next_image_cleanup))
+
+    @property
+    def is_blocked_by_playback(self):
+        if self.allow_during_video_playback:
+            return False
+        import xbmc
+        return xbmc.Player().isPlayingVideo()
+
+    @property
+    def is_vacuum_allowed(self):
+        if self.is_blocked_by_playback:
+            return False
+        return self.is_next_vacuum
+
+    @property
+    def is_delete_allowed(self):
+        if self.is_blocked_by_playback:
+            return False
+        return self.is_next_delete
+
+    @property
+    def is_image_cleanup_allowed(self):
+        if self.is_blocked_by_playback:
+            return False
+        return self.is_next_image_cleanup
 
     @property
     def legacy_usr_cache_folders(self):
@@ -61,11 +99,10 @@ class DatabaseMaintenance:
         return get_todays_date()
 
     def vacuum(self, force=False):
-        if not force and not self.is_next_vacuum:
+        if not force and not self.is_vacuum_allowed:
             return
-        # p3i: skip vacuum while Kodi is playing — VACUUM holds the SQLite
-        # file lock and fsyncs a full DB-sized temp copy, which can stall
-        # the video pipeline thread long enough to drop frames on UHD.
+        # p3i: defer automatic VACUUM during audio or video playback.
+        # Leave maintenance due so it can run once playback stops.
         if not force:
             import xbmc
             if xbmc.Player().isPlaying():
@@ -80,7 +117,7 @@ class DatabaseMaintenance:
 
     def delete_legacy_folders(self, force=False):
         """ Once-off routine to delete old unused database versions to avoid wasting disk space """
-        if not force and not self.is_next_delete:
+        if not force and not self.is_delete_allowed:
             return
         self.set_next_delete()
         from tmdbhelper.lib.files.futils import delete_folder
@@ -90,6 +127,13 @@ class DatabaseMaintenance:
             delete_folder(f, force=True, check_exists=True, join_addon_data=True)
         for f in self.legacy_usr_cache_folders:
             delete_folder(f, force=True, check_exists=True, join_addon_data=False)
+
+    def prune_image_cache(self):
+        if not self.is_image_cleanup_allowed:
+            return
+        self.set_next_image_cleanup()
+        from tmdbhelper.lib.files.imagecache import ImageCacheMaintenance
+        ImageCacheMaintenance().prune()
 
     @staticmethod
     def recache_kodidb(notification=True, confirmation=False):

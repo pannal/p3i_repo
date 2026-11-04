@@ -216,7 +216,8 @@ class Player:
             tmdb_id=self.tmdb_id,
             season=self.season,
             episode=self.episode,
-            translation=self.translation
+            translation=self.translation,
+            provider_ids=self.player_files_data.requires_provider_ids,
         )
 
     @cached_property
@@ -303,12 +304,28 @@ class PlayerEpisode(Player):
         tmdb_id=None,
         season=None,
         episode=None,
+        virtual_season=None,
+        virtual_episode=None,
         **kwargs
     ):
         self.tmdb_id = tmdb_id
         self.season = season
         self.episode = episode
+        self.virtual_season = virtual_season
+        self.virtual_episode = virtual_episode
         super().__init__(**kwargs)
+
+    def set_resolver(self, player):
+        if player.is_local or self.season is None or self.episode is None:
+            return super().set_resolver(player)
+        from tmdbhelper.lib.player.dialog.episode_groups import PlayerEpisodeGroups
+        item = PlayerEpisodeGroups(
+            self.dictionary, player,
+            virtual_season=self.virtual_season, virtual_episode=self.virtual_episode).dictionary
+        if item is None:
+            return
+        player.item = item
+        return super().set_resolver(player)
 
 
 def Player(tmdb_type, **kwargs):
