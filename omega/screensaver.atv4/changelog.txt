@@ -1,3 +1,9 @@
+v3.1.0  (2026-10-16)
+- Add optional seamless transitions on LibreELEC using FFmpeg Tools
+- Preserve randomized playback for online and locally cached Aerials
+- Fall back to the original playback path when FFmpeg is unavailable
+- Add transition diagnostics and host-side regression tests
+
 v3.0.3  (2022-01-01)
 - New scenes added (Patagonia, Yosemite, Grand Canyon, Iceland, Scotland)
 - Updated Apple resources.tar entries.json URL

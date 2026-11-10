@@ -4204,6 +4204,46 @@ provider-name="jurialmunkey">
 		<disclaimer lang="zh_TW">Estuary 是 Kodi 預設的佈景主題，移除它可能會造成問題</disclaimer>
 	</extension>
 </addon>
+<addon id="screensaver.atv4" name="Aerial" version="3.1.0-p3i.1" provider-name="enen92, Jeremiah Steven Marquez">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0"/>
+	</requires>
+	<extension point="xbmc.ui.screensaver" library="entrypointscreensaver.py" />
+	<extension point="xbmc.python.script" library="entrypointscript.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.service" library="service.py"/>
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<license>GPL-2.0-only</license>
+		<source>https://github.com/pannal/screensaver.atv4/tree/codex/p3i-aerial-omega</source>
+		<forum>https://forum.kodi.tv/showthread.php?tid=246655</forum>
+		<summary lang="en_GB">Apple TV Screensavers in Kodi</summary>
+		<summary lang="es_ES">Protector de pantalla Apple TV para Kodi</summary>
+		<description lang="en_GB">This screensaver addon provides Apple TV aerial screensavers in Kodi</description>
+    <description lang="es_ES">Este complemento habilita el protector de pantalla Aerial de Apple TV para Kodi</description>
+		<news>v3.1.0  (2026-10-16)
+			- Add optional seamless transitions on LibreELEC using FFmpeg Tools
+			- Preserve randomized playback for online and locally cached Aerials
+			- Fall back to the original playback path when FFmpeg is unavailable
+			- Add transition diagnostics and host-side regression tests
+
+		v3.0.3  (2022-01-01)
+			- New scenes added (Patagonia, Yosemite, Grand Canyon, Iceland, Scotland)
+			- Updated Apple resources.tar entries.json URL
+			- Location All is now sorted before any of the other locations
+			- Fixed bug that was preventing playback or download when HEVC was disabled
+		</news>
+		<assets>
+			<icon>icon.png</icon>
+			<fanart>fanart.jpg</fanart>
+			<screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+			<screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+			<screenshot>resources/screenshots/screenshot-03.jpg</screenshot>
+			<screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
+		</assets>
+	</extension>
+</addon>
 <addon id="screensaver.atv4" name="Aerial" version="3.0.3-p3i.1" provider-name="enen92">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
