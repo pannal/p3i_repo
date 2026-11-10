@@ -5,23 +5,23 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@kodi.tv\n"
-"PO-Revision-Date: 2026-01-19 00:54+0000\n"
-"Last-Translator: Kryštof Černý <cleverline1mc@gmail.com>\n"
+"PO-Revision-Date: 2026-07-12 21:16+0000\n"
+"Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <https://kodi.weblate.cloud/projects/kodi-add-ons-videoplayer-inputstream/inputstream-ffmpegdirect/cs_cz/>\n"
 "Language: cs_cz\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 msgctxt "Addon Summary"
 msgid "InputStream Client for FFmpeg streams (libavformat)"
-msgstr "Klient toků FFmpeg (libavformat) protokolu InputStream"
+msgstr "Klient InputStream pro streamy FFmpeg (libavformat)"
 
 msgctxt "Addon Description"
 msgid "InputStream Client for streams that can be opened by either FFmpeg's libavformat or Kodi's cURL. Common stream formats such as plain TS, HLS and DASH (without DRM) are supported as well as many others.[CR][CR]The addon also has support for Archive/Catchup services where there is a replay windows (usually in days) and can timeshift across that span.[CR][CR]For documenation visit: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md"
-msgstr "Klient protokolu InputStream pro toky, které mohou být otevřeny pomocí FFmpeg libavformat nebo Kodi cURL.Běžné formáty toků jako prosté TS, HLS, DASH (bez DRM) a mnoho dalších jsou podporovány.[CR][CR]Doplněk má též podporu pro služby Archive/Catchup, které mají dobu pro opětovné přehrání (obvykle ve dnech) a mohou mít v tomto období časový posun.[CR][CR]Pro dokumentaci navštivte: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md"
+msgstr "Klient InputStream pro streamy, které lze otevřít pomocí FFmpeg libavformat nebo Kodi cURL. Podporovány jsou běžné formáty streamů, jako jsou prostý TS, HLS a DASH (bez DRM), a mnoho dalších.[CR][CR]Doplněk podporuje také archivní služby a služby zpětného zhlédnutí, které mají časové okno pro zpětné přehrání (obvykle ve dnech) a v tomto rozsahu umožňují časový posun.[CR][CR]Dokumentaci najdete na: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md"
 
 #. settings labels
 #. label-category: Network
@@ -67,7 +67,7 @@ msgstr "Šířka pásma"
 #. label-option: Network - networkBandwidth
 msgctxt "#30008"
 msgid "Stream selection bandwidth"
-msgstr "Šířka pásma proudu"
+msgstr "Datový tok pro výběr streamu"
 
 # empty strings from id 30009 to 30019
 #. label-category: timeshift
@@ -89,7 +89,7 @@ msgstr "Povolit limit časového posunu"
 #. label: Timeshift - timeshiftOnDiskLength
 msgctxt "#30023"
 msgid "Maximum timeshift buffer length"
-msgstr "Maximální velikost vyrovnávací paměti časového posunu"
+msgstr "Maximální délka vyrovnávací paměti časového posunu"
 
 #. format-label: Timeshift - timeshiftOnDiskLength
 msgctxt "#30024"
@@ -116,7 +116,7 @@ msgstr "Povolit protokolování FFmpeg"
 #. label: Advanced - probeForFps
 msgctxt "#30043"
 msgid "Probe for FPS"
-msgstr ""
+msgstr "Zjišťovat snímkovou frekvenci"
 
 #. label: Advanced - enableTeletext
 msgctxt "#30044"
@@ -126,17 +126,17 @@ msgstr "Povolit teletext"
 #. help: Advanced - useFastOpemForManifestStreams
 msgctxt "#30045"
 msgid "Use fast open for streams using a manifest file"
-msgstr ""
+msgstr "Používat rychlé otevření pro streamy s manifestem"
 
 #. help: Advanced - forceRealtimeOffCatchup
 msgctxt "#30046"
 msgid "For catchup streams report stream is not realtime"
-msgstr ""
+msgstr "U streamů zpětného zhlédnutí hlásit, že stream není v reálném čase"
 
 #. help: Advanced - disableStrictHLSfileExtensionCheck
 msgctxt "#30047"
 msgid "Disable strict HLS file extension check"
-msgstr ""
+msgstr "Zakázat striktní kontrolu přípony souborů HLS"
 
 # empty strings from id 30047 to 30599
 #. ############
@@ -146,12 +146,12 @@ msgstr ""
 #. help-category: Network
 msgctxt "#30600"
 msgid "This category contains the settings for network configuration such as FFmpeg proxy and bandwidth limits."
-msgstr ""
+msgstr "Tato kategorie obsahuje nastavení síťové konfigurace, například proxy FFmpeg a limity datového toku."
 
 #. help: Network - useHttpProxy
 msgctxt "#30601"
 msgid "Whether or not a proxy should be used when opening with FFmpeg. Note that if opened using curl kodi's proxy settings will be used."
-msgstr ""
+msgstr "Určuje, zda se má při otevírání pomocí FFmpeg používat proxy. Při otevření pomocí cURL se použijí nastavení proxy Kodi."
 
 #. help: Network - httpProxyHost
 msgctxt "#30602"
@@ -176,29 +176,29 @@ msgstr "Konfigurujte heslo serveru proxy."
 #. help: Network - streamBandwidth
 msgctxt "#30606"
 msgid "Use this value as a maximum when selecting which HLS stream to use."
-msgstr ""
+msgstr "Použít tuto hodnotu jako maximum při výběru streamu HLS, který se má použít."
 
 # empty strings from id 30607 to 30619
 #. help info - Timeshift
 #. help-category: timeshift
 msgctxt "#30620"
 msgid "This category contains the settings for timeshift. Timeshifting allows you to pause live TV as well as move back and forward from your current position similar to playing back a recording."
-msgstr ""
+msgstr "Tato kategorie obsahuje nastavení časového posunu. Časový posun umožňuje pozastavit živou TV a posouvat se zpět i vpřed od aktuální pozice, podobně jako při přehrávání nahrávky."
 
 #. help: Timeshift - timeshiftBufferPath
 msgctxt "#30621"
 msgid "The path used to store the timeshift buffer. The default is the [I]\"addon_data/inputstream.ffmpegdirect/timeshift\"[/I] folder in userdata. Note that this folder will be cleared  of timeshift files on Kodi startup. Only relevant when [I]\"inputstream.ffmpegdirect.stream_mode=timeshift\"[/I] property is passed to the addon."
-msgstr ""
+msgstr "Cesta používaná k uložení vyrovnávací paměti časového posunu. Výchozí je složka [I]\"addon_data/inputstream.ffmpegdirect/timeshift\"[/I] v uživatelských datech. Při spuštění Kodi budou z této složky odstraněny soubory časového posunu. Relevantní pouze v případě, že je doplňku předána vlastnost [I]\"inputstream.ffmpegdirect.stream_mode=timeshift\"[/I]."
 
 #. help: Timeshift - timeshiftEnableLimit
 msgctxt "#30622"
 msgid "Enable this option to limit the length of the timeshift buffer. If disabled the buffer will grow forever until playback is stopped. Regardless of this setting the buffer will also grow forever if paused."
-msgstr ""
+msgstr "Povolením této volby omezíte délku vyrovnávací paměti časového posunu. Pokud je vypnutá, vyrovnávací paměť poroste bez omezení až do zastavení přehrávání. Bez ohledu na toto nastavení bude vyrovnávací paměť růst bez omezení také při pozastavení přehrávání."
 
 #. help: Timeshift - timeshiftOnDiskLength
 msgctxt "#30623"
 msgid "The length of the timeshift buffer in hours. Once the value is reached the older buffer data will be deleted to ensure the limit is not breached. Note that the storage for your device should be sufficient to allow the buffer to grow to it's maximum length (otherwise it's equivalent to disabling this option). A good heuristic for video size is 130MB per minute of 1080p video and 375MB per minute of 4K video."
-msgstr ""
+msgstr "Délka vyrovnávací paměti časového posunu v hodinách. Po dosažení této hodnoty budou starší data vyrovnávací paměti odstraněna, aby limit nebyl překročen. Úložiště zařízení by mělo mít dostatek místa, aby vyrovnávací paměť mohla narůst na maximální délku (jinak to má stejný účinek jako vypnutí této volby). Dobrá orientační hodnota velikosti videa je 130 MB za minutu videa 1080p a 375 MB za minutu videa 4K."
 
 # empty strings from id 30624 to 30639
 #. help info - Advanced
@@ -210,29 +210,29 @@ msgstr "Rozšířená nastavení"
 #. help: Advanced - allowFFmpegLogging
 msgctxt "#30641"
 msgid "If enabled the addon will log any FFmpeg logging to the Kodi log."
-msgstr ""
+msgstr "Pokud je povoleno, doplněk bude do protokolu Kodi zapisovat všechny záznamy FFmpeg."
 
 #. help: Advanced - probeForFps
 msgctxt "#30642"
 msgid "Probe for frames per second. Default enabled. If disabled the value returned by the codec will be used."
-msgstr ""
+msgstr "Zjišťuje snímkovou frekvenci. Ve výchozím nastavení povoleno. Pokud je vypnuto, použije se hodnota vrácená kodekem."
 
 #. help: Advanced - enableTeletext
 msgctxt "#30643"
 msgid "Allow teletext. Default enabled."
-msgstr ""
+msgstr "Umožňuje teletext. Ve výchozím nastavení povoleno."
 
 #. help: Advanced - useFastOpenForManifestStreams
 msgctxt "#30644"
 msgid "Streams which have a manifest file (e.g. HLD/DASH/Smooth Streaming) can be opened more quickly with FFmpeg with this option enabled."
-msgstr ""
+msgstr "Streamy, které mají soubor manifestu (např. HLS/DASH/Smooth Streaming), lze při povolení této volby otevírat pomocí FFmpeg rychleji."
 
 #. help: Advanced - forceRealtimeOffCatchup
 msgctxt "#30645"
 msgid "For certain catchup streams such as HLS reporting that a live stream is not live can improve stream open times. If testing this option works for a catchup stream/provider, then add a [I]\"#KODIPROP=inputstream.ffmpegdirect.is_realtime_stream=false\"[/I] to the M3U entry in question. This setting should not be left enabled for all streams."
-msgstr ""
+msgstr "U některých streamů zpětného zhlédnutí, například HLS, může nahlášení, že živý stream není živý, zrychlit otevření streamu. Pokud při testování tato volba u daného streamu nebo poskytovatele zpětného zhlédnutí funguje, přidejte do příslušné položky M3U [I]\"#KODIPROP=inputstream.ffmpegdirect.is_realtime_stream=false\"[/I]. Toto nastavení by nemělo zůstat povolené pro všechny streamy."
 
 #. help: Advanced - disableStrictHLSfileExtensionCheck
 msgctxt "#30646"
 msgid "Allows playing HLS streams without file extension or with unsupported file extension. This lowers the security requirements in ffmpeg."
-msgstr ""
+msgstr "Umožňuje přehrávání streamů HLS bez přípony souboru nebo s nepodporovanou příponou souboru. Snižuje to bezpečnostní požadavky ve FFmpeg."

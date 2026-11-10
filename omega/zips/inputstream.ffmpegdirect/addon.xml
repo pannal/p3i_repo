@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="inputstream.ffmpegdirect" version="666.22.2.5-p3i.1" name="Inputstream FFmpeg Direct" provider-name="Ross Nicholson">
+<addon id="inputstream.ffmpegdirect" version="666.22.2.7-p3i.1" name="Inputstream FFmpeg Direct" provider-name="Ross Nicholson">
   <requires>
     <import addon="kodi.binary.global.main" minversion="2.0.0" version="2.0.2"/>
     <import addon="kodi.binary.global.general" minversion="1.0.4" version="1.0.5"/>
@@ -8,7 +8,7 @@
     <import addon="kodi.binary.global.tools" minversion="1.0.0" version="1.0.4"/>
     <import addon="kodi.binary.instance.inputstream" minversion="3.3.0" version="3.3.0"/>
   </requires>
-  <extension point="kodi.inputstream" name="ffmpegdirect" extension="" tags="true" listitemprops="program_number|stream_mode|open_mode|manifest_type|default_url|is_realtime_stream|playback_as_live|programme_start_time|programme_end_time|catchup_url_format_string|catchup_url_near_live_format_string|catchup_buffer_start_time|catchup_buffer_end_time|catchup_buffer_offset|catchup_terminates|catchup_granularity|timezone_shift|default_programme_duration|programme_catchup_id" library_linux="inputstream.ffmpegdirect.so.22.2.5"/>
+  <extension point="kodi.inputstream" name="ffmpegdirect" extension="" tags="true" listitemprops="program_number|stream_mode|open_mode|manifest_type|default_url|is_realtime_stream|playback_as_live|programme_start_time|programme_end_time|catchup_url_format_string|catchup_url_near_live_format_string|catchup_buffer_start_time|catchup_buffer_end_time|catchup_buffer_offset|catchup_terminates|catchup_granularity|timezone_shift|default_programme_duration|programme_catchup_id" library_linux="inputstream.ffmpegdirect.so.22.2.7"/>
   <extension point="xbmc.service" library="resources/lib/runner.py"/>
   <extension point="xbmc.addon.metadata">
     <platform/>
@@ -20,7 +20,7 @@
     </assets>
     <summary lang="bs_BA">InputStream klijent za FFmpeg tokove (libavformat)</summary>
     <summary lang="ca_ES">Client InputStream per a fluxos FFmpeg (libavformat)</summary>
-    <summary lang="cs_CZ">Klient toků FFmpeg (libavformat) protokolu InputStream</summary>
+    <summary lang="cs_CZ">Klient InputStream pro streamy FFmpeg (libavformat)</summary>
     <summary lang="da_DK">InputStream-klient til FFmpeg-streams (libavformat)</summary>
     <summary lang="de_DE">InputStream-Client für FFmpeg-Streams (libavformat)</summary>
     <summary lang="en_GB">InputStream Client for FFmpeg streams (libavformat)</summary>
@@ -39,7 +39,7 @@
     <summary lang="zh_CN">FFmpeg 流的 InputStream 客户端（libavformat）</summary>
     <description lang="bs_BA">InputStream klijent za tokove koji se mogu otvoriti pomoću FFmpeg-ovog libavformata ili Kodi-jevog cURL-a. Podržani su uobičajeni formati tokova kao što su običan TS, HLS i DASH (bez DRM-a), kao i mnogi drugi.[CR][CR]Dodatak također ima podršku za usluge arhiviranja/nadoknađivanja gdje postoje prozori za reprodukciju (obično u danima) i može se vremenski pomaknuti kroz taj raspon.[CR][CR]Za dokumentaciju posjetite: https://github.com/xbmc/inputtok.ffmpegdirect/blob/Matrix/README.md</description>
     <description lang="ca_ES">Client InputStream per a fluxos que es poden obrir mitjançant el libavformat de FFmpeg o el cURL de Kodi. S’admeten formats de flux comuns, com ara TS simple, HLS i DASH (sense DRM), així com molts altres.[CR][CR]El complement també és compatible amb els serveis Archive/Catchup , on hi ha una finestra de reproducció (normalment en dies) i pot canviar de temps en aquest interval.[CR][CR]Per a la documentació, visiteu: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>
-    <description lang="cs_CZ">Klient protokolu InputStream pro toky, které mohou být otevřeny pomocí FFmpeg libavformat nebo Kodi cURL.Běžné formáty toků jako prosté TS, HLS, DASH (bez DRM) a mnoho dalších jsou podporovány.[CR][CR]Doplněk má též podporu pro služby Archive/Catchup, které mají dobu pro opětovné přehrání (obvykle ve dnech) a mohou mít v tomto období časový posun.[CR][CR]Pro dokumentaci navštivte: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>
+    <description lang="cs_CZ">Klient InputStream pro streamy, které lze otevřít pomocí FFmpeg libavformat nebo Kodi cURL. Podporovány jsou běžné formáty streamů, jako jsou prostý TS, HLS a DASH (bez DRM), a mnoho dalších.[CR][CR]Doplněk podporuje také archivní služby a služby zpětného zhlédnutí, které mají časové okno pro zpětné přehrání (obvykle ve dnech) a v tomto rozsahu umožňují časový posun.[CR][CR]Dokumentaci najdete na: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>
     <description lang="da_DK">InputStream-klient til streams, der kan åbnes af enten FFmpeg's libavformat eller Kodi's cURL. Almindelige streamformater som f.eks. almindelig TS, HLS og DASH (uden DRM) understøttes såvel som mange andre.[CR][CR]Add-on'et har også understøttelse af arkiv-/indhentningstjenester, hvor der er et afspilningsvindue (normalt i dage) og kan tidsforskyde på tværs af dette spænd.[CR][CR]For dokumentation besøg: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>
     <description lang="de_DE">InputStream-Client für Streams, die entweder mit dem libav-Format von FFmpeg oder mit cURL von Kodi geöffnet werden können. Gängige Stream-Formate wie TS, HLS und DASH (ohne DRM) werden ebenso unterstützt wie viele andere.[CR][CR]Das Addon unterstützt auch Archiv-/Aufholdienste, bei denen Wiedergabefenster vorhanden sind (normalerweise in Tagen), und kann über diesen Zeitraum hinweg eine Zeitverschiebung bewirken.[CR][CR]Dokumentation unter: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>
     <description lang="en_GB">InputStream Client for streams that can be opened by either FFmpeg's libavformat or Kodi's cURL. Common stream formats such as plain TS, HLS and DASH (without DRM) are supported as well as many others.[CR][CR]The addon also has support for Archive/Catchup services where there is a replay windows (usually in days) and can timeshift across that span.[CR][CR]For documenation visit: https://github.com/xbmc/inputstream.ffmpegdirect/blob/Matrix/README.md</description>

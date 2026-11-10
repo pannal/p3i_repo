@@ -122,6 +122,11 @@
                 </setting>
             </group>
             <group id="3" label="32710">
+                <setting id="contextmenu_play_random" type="boolean" label="32767" help="32768">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="contextmenu_related_lists" type="boolean" label="32235" help="32613">
                     <level>0</level>
                     <default>true</default>
@@ -160,6 +165,19 @@
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
+                </setting>
+                <setting id="widgets_stale_hours" type="integer" label="32761" help="32762">
+                    <level>0</level>
+                    <default>24</default>
+                    <constraints>
+                        <options>
+                            <option label="32763">0</option>
+                            <option label="32764">24</option>
+                            <option label="32765">48</option>
+                            <option label="32766">72</option>
+                        </options>
+                    </constraints>
+                    <control type="spinner" format="string"/>
                 </setting>
                 <setting id="flatten_seasons" type="boolean" label="32085" help="32622">
                     <level>0</level>
@@ -806,8 +824,27 @@
                     <enable>false</enable>
                 </setting>
             </group>
-            <group id="5" label="32728">
-                <visible>false</visible>
+            <group id="5" label="32756">
+                <setting id="authenticate_tmdb" type="action" label="32010" help="32757">
+                    <level>0</level>
+                    <dependencies>
+                        <dependency type="visible" operator="is" setting="tmdb_user_token"></dependency>
+                    </dependencies>
+                    <control type="button" format="action">
+                        <close>true</close>
+                        <data>RunScript(plugin.video.themoviedb.helper,authenticate_tmdb,return_settings=true)</data>
+                    </control>
+                </setting>
+                <setting id="revoke_tmdb" type="action" label="32169" help="32758">
+                    <level>0</level>
+                    <dependencies>
+                        <dependency type="visible" operator="!is" setting="tmdb_user_token"></dependency>
+                    </dependencies>
+                    <control type="button" format="action">
+                        <close>true</close>
+                        <data>RunScript(plugin.video.themoviedb.helper,revoke_tmdb,return_settings=true)</data>
+                    </control>
+                </setting>
                 <setting id="tmdb_user_token" type="string" label="32011" help="32701">
                     <level>0</level>
                     <default/>
@@ -868,15 +905,6 @@
                     <control type="button" format="action">
                         <close>true</close>
                         <data>RunScript(plugin.video.themoviedb.helper,select_sync_provider,capability=scrobbling,return_settings=true)</data>
-                    </control>
-                </setting>
-                <setting id="sync_provider_stats" type="string" label="32598" help="32679">
-                    <level>0</level>
-                    <default></default>
-                    <constraints><allowempty>true</allowempty></constraints>
-                    <control type="button" format="action">
-                        <close>true</close>
-                        <data>RunScript(plugin.video.themoviedb.helper,select_sync_provider,capability=stats,return_settings=true)</data>
                     </control>
                 </setting>
                 <setting id="install_sync_provider" type="action" label="32557" help="32680">
@@ -1081,10 +1109,17 @@
                     <default>False</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="timer_reports" type="boolean" label="32395" help="32697">
+                <setting id="timer_reports" type="integer" label="32395" help="32697">
                     <level>0</level>
-                    <default>False</default>
-                    <control type="toggle"/>
+                    <default>0</default>
+                    <constraints>
+                        <options>
+                            <option label="32585">0</option>
+                            <option label="32759">1</option>
+                            <option label="32760">2</option>
+                        </options>
+                    </constraints>
+                    <control type="spinner" format="string"/>
                 </setting>
                 <setting id="log_request_tmdb" type="action" label="32348" help="32698">
                     <level>0</level>

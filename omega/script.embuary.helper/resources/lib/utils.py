@@ -3,8 +3,6 @@
 
 ########################
 
-from __future__ import division
-
 import xbmc
 import xbmcaddon
 import xbmcgui

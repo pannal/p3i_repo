@@ -3,12 +3,11 @@
 
 #################################################################################################
 
-from __future__ import division
-
 import xbmc
 import xbmcaddon
 import xbmcvfs
 import os
+import errno
 from PIL import ImageFilter,Image,ImageOps,ImageEnhance
 
 from resources.lib.helper import *
@@ -19,6 +18,7 @@ BLUR_CONTAINER = xbmc.getInfoLabel('Skin.String(BlurContainer)') or 100000
 BLUR_RADIUS = xbmc.getInfoLabel('Skin.String(BlurRadius)') or ADDON.getSetting('blur_radius')
 BLUR_SATURATION = xbmc.getInfoLabel('Skin.String(BlurSaturation)') or '1.0'
 OLD_IMAGE = ''
+RESAMPLE = getattr(Image, 'Resampling', Image).LANCZOS
 
 #################################################################################################
 
@@ -32,7 +32,7 @@ try:
 
 except OSError as e:
     # fix for race condition
-    if e.errno != os.errno.EEXIST:
+    if e.errno != errno.EEXIST:
         raise
     pass
 
@@ -70,7 +70,7 @@ class ImageBlur():
                 touch_file(targetfile)
             else:
                 img = _openimage(self.image,ADDON_DATA_IMG_PATH,filename)
-                img.thumbnail((200, 200), Image.ANTIALIAS)
+                img.thumbnail((200, 200), RESAMPLE)
                 img = img.convert('RGB')
                 img = img.filter(ImageFilter.GaussianBlur(self.radius))
 
@@ -92,7 +92,7 @@ class ImageBlur():
 
         try:
             img = Image.open(self.filepath)
-            imgResize = img.resize((1,1), Image.ANTIALIAS)
+            imgResize = img.resize((1,1), RESAMPLE)
             col = imgResize.getpixel((0,0))
             imagecolor = 'FF%s%s%s' % (format(col[0], '02x'), format(col[1], '02x'), format(col[2], '02x'))
             log('Average color: ' + imagecolor, DEBUG)
@@ -148,7 +148,7 @@ class CreateGenreThumb():
         try:
             collage_images = []
             for poster in self.temp_files:
-                image = ImageOps.fit(poster, (size), method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
+                image = ImageOps.fit(poster, (size), method=RESAMPLE, bleed=0.0, centering=(0.5, 0.5))
                 collage_images.append(image)
 
             collage = Image.new('RGB', (width, height), (5,5,5))

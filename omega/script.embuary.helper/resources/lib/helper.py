@@ -132,8 +132,13 @@ def touch_file(filepath):
     os.utime(filepath,None)
 
 
+_WINDOWS = {}
+
+
 def winprop(key, value=None, clear=False, window_id=10000):
-    window = xbmcgui.Window(window_id)
+    window = _WINDOWS.get(window_id)
+    if window is None:
+        window = _WINDOWS[window_id] = xbmcgui.Window(window_id)
 
     if clear:
         window.clearProperty(key.replace('.json', '').replace('.bool', ''))
@@ -172,7 +177,7 @@ def get_channeldetails(channel_name):
 
     try:
         for channel in channels['result']['channels']:
-            if channel['channel'].encode('utf-8') == channel_name:
+            if channel['channel'] == channel_name:
                 channel_details['channelid'] = channel['channelid']
                 channel_details['channel'] = channel['channel']
                 channel_details['icon'] = channel['icon']
@@ -260,7 +265,7 @@ def sync_library_tags(tags=None,recreate=False):
 
     ''' cleanup removed old tags
     '''
-    for tag in old_tags:
+    for tag in list(old_tags):
         if tag not in tags:
             save = True
             old_tags.remove(tag)

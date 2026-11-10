@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@kodi.tv\n"
-"PO-Revision-Date: 2026-01-19 00:54+0000\n"
+"PO-Revision-Date: 2026-06-08 06:39+0000\n"
 "Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://kodi.weblate.cloud/projects/kodi-add-ons-videoplayer-inputstream/inputstream-ffmpegdirect/fi_fi/>\n"
 "Language: fi_fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 msgctxt "Addon Summary"
 msgid "InputStream Client for FFmpeg streams (libavformat)"
@@ -121,7 +121,7 @@ msgstr "FPS-tutkinta (FPS Probe)"
 #. label: Advanced - enableTeletext
 msgctxt "#30044"
 msgid "Enable teletext"
-msgstr "Käytä teksti-TV:tä"
+msgstr "Käytä teksti-tv:tä"
 
 #. help: Advanced - useFastOpemForManifestStreams
 msgctxt "#30045"
@@ -220,7 +220,7 @@ msgstr "Tutki sekuntikohtaisia ruutuja (FPS Probe). Oletuksena käytössä. Jos 
 #. help: Advanced - enableTeletext
 msgctxt "#30643"
 msgid "Allow teletext. Default enabled."
-msgstr "Salli teksti-TV. Oletuksena käytössä."
+msgstr "Salli teksti-tv. Oletuksena käytössä."
 
 #. help: Advanced - useFastOpenForManifestStreams
 msgctxt "#30644"
