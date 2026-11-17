@@ -4572,4 +4572,89 @@ Amlogic VNC server is a Virtual Network Computing (VNC) server for Amlogic devic
     </assets>
   </extension>
 </addon>
+<addon id="service.aml-vnc"
+       name="Amlogic VNC Server"
+       version="666.21.3.8-p3i.2"
+       provider-name="Team CoreELEC">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+
+  </requires>
+  <extension point="xbmc.service" library="default.py">
+    <provides></provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Amlogic VNC server</summary>
+    <description>
+Amlogic VNC server is a Virtual Network Computing (VNC) server for Amlogic devices
+    </description>
+    <disclaimer>
+
+    </disclaimer>
+    <platform>all</platform>
+    <news>
+666.21.3.8-p3i.2
+- Use a 1080p Kodi GUI during FBDEV VNC sessions.
+- Keep viewers that support desktop resizing connected when the GUI changes size.
+
+666.21.3.8-p3i.1
+- Use linear Kodi GUI scanout while an FBDEV viewer is connected.
+
+21.3.8
+- bump package to 1.4.0
+- change addon icon
+- add new config options
+
+21.1.1.7
+- add missing service alias
+- hide password on settings page
+
+21.0.6
+- bump package to 1.2.0
+
+21.0.5
+- replace package source git repository
+- creating a source directory with the necessary files and their modifications
+- modify the service start script to be compatible with the new binary
+- add Hungarian translation of the add-on
+- restart service on settings change
+
+21.0.4
+- performance fixes
+
+21.0.3
+- fix resolution issue when used other than native
+
+21.0.2
+- add option to set desktop name (hostname by default)
+
+21.0.1
+- make IPv6 listen port consistent with IPv4 port
+
+20.1.0
+- fix password authentication when building with openssl &gt;=3.0.0
+
+20.0.104
+- update language strings file
+
+103
+- improvements
+
+102
+- libvncserver bump
+
+101
+- CoreELEC rebrand
+
+100
+- Initial release
+    </news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.png</fanart>
+
+    </assets>
+  </extension>
+</addon>
+
 </addons>

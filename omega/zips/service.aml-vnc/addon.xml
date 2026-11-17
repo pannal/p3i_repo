@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="service.aml-vnc"
        name="Amlogic VNC Server"
-       version="666.21.3.8-p3i.1"
+       version="666.21.3.8-p3i.2"
        provider-name="Team CoreELEC">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
@@ -20,6 +20,10 @@ Amlogic VNC server is a Virtual Network Computing (VNC) server for Amlogic devic
     </disclaimer>
     <platform>all</platform>
     <news>
+666.21.3.8-p3i.2
+- Use a 1080p Kodi GUI during FBDEV VNC sessions.
+- Keep viewers that support desktop resizing connected when the GUI changes size.
+
 666.21.3.8-p3i.1
 - Use linear Kodi GUI scanout while an FBDEV viewer is connected.
 
